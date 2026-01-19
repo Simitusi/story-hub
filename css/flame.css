@@ -405,8 +405,37 @@ body.flame .back-to-top:hover {
 }
 body.flame .chapter-content { max-width: 760px; margin: 0 auto; padding: 0 1.25rem 5rem; }
 
-@media (max-width: 900px){
-  body.flame{
-    background-attachment: scroll;
+@media (max-width: 768px) {
+  body {
+    background: none !important;
+    animation: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .bg-layer,
+  #background {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    background:
+      radial-gradient(
+        60% 40% at 20% 10%,
+        rgba(255, 60, 60, 0.25),
+        transparent 70%
+      ),
+      radial-gradient(
+        50% 50% at 80% 30%,
+        rgba(120, 0, 0, 0.35),
+        transparent 70%
+      ),
+      linear-gradient(
+        180deg,
+        #160000,
+        #000000
+      );
   }
 }
