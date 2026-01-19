@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generated_at": "2026-01-19T01:26:08",
+  "generated_at": "2026-01-19T16:03:44",
   "root": "storyhub",
   "arcs": {
     "flame": [
@@ -61,6 +61,25 @@
       }
     ],
     "characters": [],
-    "lore": []
+    "lore": [
+      {
+        "id": "L_ECONOMY",
+        "type": "L",
+        "arc": "lore",
+        "title": "L ECONOMY",
+        "slug": "economy",
+        "source": "source-docx/L_ECONOMY.docx",
+        "output": "content/lore/ECONOMY.html"
+      },
+      {
+        "id": "L_LORE_BITS",
+        "type": "L",
+        "arc": "lore",
+        "title": "L LORE BITS",
+        "slug": "lore-bits",
+        "source": "source-docx/L_LORE_BITS.docx",
+        "output": "content/lore/LORE_BITS.html"
+      }
+    ]
   }
 }

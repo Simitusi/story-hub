@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>L_ECONOMY</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<p><strong>1. The Outside World Economy (Inter-faction, wasteland
+level)</strong></p>
+<p>This is the part that keeps the world from collapsing into isolated
+bubbles.</p>
+<p><strong>Universal value: Drugs</strong></p>
+<p>Drugs are the closest thing to real money outside faction
+borders.</p>
+<p>Why they work:</p>
+<ul>
+<li><p>universal demand</p></li>
+<li><p>portable, divisible</p></li>
+<li><p>testable quality</p></li>
+<li><p>value tied to survival, not ideology</p></li>
+<li><p>addiction guarantees circulation</p></li>
+</ul>
+<p>Different drugs have different value:</p>
+<ul>
+<li><p>stabilizers &gt; enhancers &gt; recreational</p></li>
+<li><p>clean supply &gt; cut junk</p></li>
+<li><p>known origin &gt; mystery mix</p></li>
+</ul>
+<p>Drugs are used for:</p>
+<ul>
+<li><p>inter-faction trade</p></li>
+<li><p>bribery</p></li>
+<li><p>emergency leverage</p></li>
+<li><p>paying smugglers, mercs, informants</p></li>
+<li><p>hoarding long-term wealth</p></li>
+</ul>
+<p>They are <strong>not</strong> used for daily life inside strong
+factions, because that would destabilize control.</p>
+<p><strong>Supplementary external trade</strong></p>
+<p>Alongside drugs:</p>
+<ul>
+<li><p>ammo</p></li>
+<li><p>fuel</p></li>
+<li><p>tools</p></li>
+<li><p>information</p></li>
+<li><p>slaves (as capital, not currency)</p></li>
+</ul>
+<p>Barter still exists, but drugs smooth large transactions and long
+routes</p>
+<p><strong>2. Marauder Internal Economy (Nyx’s system)</strong></p>
+<p>Inside Marauder territory, <strong>drugs are deliberately
+sidelined</strong>.</p>
+<p><strong>Currency: Marks</strong></p>
+<p>Marks are not money in the abstract sense.<br />
+They are <strong>allowances and clearance</strong>.</p>
+<p>Marks are:</p>
+<ul>
+<li><p>only usable inside Marauder territory</p></li>
+<li><p>worth nothing outside</p></li>
+<li><p>issued by Nyx</p></li>
+<li><p>rotated monthly</p></li>
+<li><p>different every month (old marks expire)</p></li>
+</ul>
+<p>They buy:</p>
+<ul>
+<li><p>food</p></li>
+<li><p>rent / housing</p></li>
+<li><p>market access</p></li>
+<li><p>basic internal services</p></li>
+</ul>
+<p>They do <strong>not</strong> represent wealth.<br />
+They represent <strong>recognized existence for this month</strong>.</p>
+<p><strong>3. Distribution and hierarchy</strong></p>
+<p><strong>Subgang leaders</strong></p>
+<ul>
+<li><p>Each subgang leader receives a fixed monthly allotment of marks
+from Nyx</p></li>
+<li><p>That allotment is calculated <strong>exactly</strong> for the
+number of members Nyx officially recognizes</p></li>
+<li><p>Leaders distribute marks to their crew</p></li>
+</ul>
+<p>Important:</p>
+<ul>
+<li><p>There is <strong>no upward complaint channel</strong></p></li>
+<li><p>If people don’t eat or can’t pay rent, it is the <strong>leader’s
+fault</strong></p></li>
+<li><p>Nyx is never blamed, structurally or socially</p></li>
+</ul>
+<p>Anyone unregistered:</p>
+<ul>
+<li><p>slaves</p></li>
+<li><p>captives</p></li>
+<li><p>guests</p></li>
+<li><p>traders staying overnight</p></li>
+</ul>
+<p>are <strong>the subgang’s responsibility</strong>, not Nyx’s.</p>
+<p><strong>4. Production, competition, and pressure</strong></p>
+<p><strong>No quotas. Only competition.</strong></p>
+<p>Nyx does not set production quotas.</p>
+<p>Instead:</p>
+<ul>
+<li><p>subgangs compete through productivity</p></li>
+<li><p>surplus sent to the center is rewarded</p></li>
+<li><p>underproduction is punished indirectly</p></li>
+</ul>
+<p>If a subgang produces surplus:</p>
+<ul>
+<li><p>Nyx grants <strong>extra marks for that month</strong></p></li>
+<li><p>this feels like a reward, not a promise</p></li>
+<li><p>it raises expectations for everyone else</p></li>
+</ul>
+<p>If a subgang underproduces:</p>
+<ul>
+<li><p>they receive fewer marks next month</p></li>
+<li><p>or the leader must compensate through:</p>
+<ul>
+<li><p>drugs</p></li>
+<li><p>ammo</p></li>
+<li><p>raids</p></li>
+<li><p>selling assets</p></li>
+<li><p>selling people</p></li>
+</ul></li>
+</ul>
+<p>Failure is framed as <strong>leadership incompetence</strong>, not
+systemic fault.</p>
+<p><strong>5. Inflation as punishment</strong></p>
+<p>The center (Nyx) relies on <strong>supply taxes</strong> from
+subgangs.</p>
+<p>If total supply drops:</p>
+<ul>
+<li><p>internal conversion rates worsen</p></li>
+<li><p>marks convert into fewer goods</p></li>
+<li><p>everyone suffers</p></li>
+</ul>
+<p>Crucially:</p>
+<ul>
+<li><p>inflation is blamed on <strong>underproductive
+subgangs</strong></p></li>
+<li><p>anger turns sideways and downward</p></li>
+<li><p>Nyx intervenes only after unrest builds</p></li>
+</ul>
+<p>Nyx never causes shortages.<br />
+The system does.</p>
+<p><strong>6. Mark circulation and settlement</strong></p>
+<p><strong>During the month</strong></p>
+<ul>
+<li><p>workers, cooks, guards, traders, service providers are paid in
+marks</p></li>
+<li><p>marks circulate internally</p></li>
+<li><p>hoarding is pointless because they expire</p></li>
+</ul>
+<p><strong>End-of-month settlement</strong></p>
+<p>Near the end of the cycle:</p>
+<ul>
+<li><p>marks can be converted at official points into:</p>
+<ul>
+<li><p>drugs</p></li>
+<li><p>ammo</p></li>
+<li><p>fuel</p></li>
+<li><p>supplies</p></li>
+</ul></li>
+</ul>
+<p>Conversion rates:</p>
+<ul>
+<li><p>change month to month</p></li>
+<li><p>depend on overall productivity</p></li>
+<li><p>discourage early conversion</p></li>
+</ul>
+<p>Because of this:</p>
+<ul>
+<li><p>rushing to convert marks is irrational</p></li>
+<li><p>waiting is safer</p></li>
+<li><p>marks remain liquid internally until settlement</p></li>
+</ul>
+<p>Not everyone wants drugs:</p>
+<ul>
+<li><p>some want ammo</p></li>
+<li><p>some want tools</p></li>
+<li><p>some want protection credit</p></li>
+</ul>
+<p>This prevents drugs from becoming internal daily currency.</p>
+<p><strong><br />
+</strong></p>
+<p><strong>7. Hoarding logic</strong></p>
+<p>You <strong>cannot hoard marks</strong>:</p>
+<ul>
+<li><p>they expire</p></li>
+</ul>
+<p>You <strong>can hoard</strong>:</p>
+<ul>
+<li><p>drugs</p></li>
+<li><p>ammo</p></li>
+<li><p>tools</p></li>
+<li><p>supplies</p></li>
+</ul>
+<p>Which creates a clean split:</p>
+<ul>
+<li><p>marks = short-term survival</p></li>
+<li><p>drugs = long-term power</p></li>
+</ul>
+<p><strong>8. Hellhound’s role in this economy</strong></p>
+<p>Hellhound is uniquely dangerous to herself in this system.</p>
+<p>As a subgang leader:</p>
+<ul>
+<li><p>she is fully responsible for her crew’s survival</p></li>
+<li><p>failure harms everyone</p></li>
+<li><p>success raises expectations</p></li>
+</ul>
+<p>Her response:</p>
+<ul>
+<li><p>solo raids to cover deficits</p></li>
+<li><p>personal risk to stabilize numbers</p></li>
+<li><p>absorbing bad months with her own body</p></li>
+</ul>
+<p>This:</p>
+<ul>
+<li><p>keeps her gang competitive</p></li>
+<li><p>hides systemic strain from Nyx</p></li>
+<li><p>makes the system appear stable</p></li>
+<li><p>burns her out quietly</p></li>
+</ul>
+<p>Hellhound becomes a <strong>shock absorber</strong> for Nyx’s
+economy.</p>
+<p><strong>9. What Nyx actually controls</strong></p>
+<p>Nyx does <strong>not</strong> control:</p>
+<ul>
+<li><p>individual effort</p></li>
+<li><p>daily transactions</p></li>
+<li><p>personal survival choices</p></li>
+</ul>
+<p>Nyx controls:</p>
+<ul>
+<li><p>recognition</p></li>
+<li><p>allowance</p></li>
+<li><p>settlement timing</p></li>
+<li><p>conversion rates</p></li>
+<li><p>intervention thresholds</p></li>
+</ul>
+<p>She rules through <strong>access, delay, and blame</strong>, not
+direct force.</p>
+<p><strong>Final synthesis</strong></p>
+<p>Your economy is:</p>
+<ul>
+<li><p><strong>Externally</strong>: drug-based, brutal,
+universal</p></li>
+<li><p><strong>Internally</strong>: allowance-based, competitive,
+blame-driven</p></li>
+<li><p><strong>Structurally</strong>: stable through rivalry, not
+trust</p></li>
+<li><p><strong>Thematically</strong>: addiction turned into
+economics</p></li>
+</ul>
+<p>Marks keep people alive.<br />
+Drugs keep people powerful.<br />
+Leaders keep people compliant.<br />
+Nyx keeps all of it deniable.</p>
+</body>
+</html>

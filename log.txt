@@ -1,11 +1,33 @@
-STORYHUB build log — 2026-01-19T01:26:08
+STORYHUB build log — 2026-01-19T16:03:44
 ROOT: C:\storyhub
 SOURCE_DIR: C:\storyhub\source-docx
 CONTENT_DIR: C:\storyhub\content
 MEDIA_DIR: C:\storyhub\media
 
+[FAIL] C_0_LUCY_HELLHOUND.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_ARK_DANIEL.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_ARK_LUCAS.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_F_BLINK.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_F_FUSE.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_F_LUMI.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_F_MAKO.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_F_ROK.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_F_RUST.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_F_SCORCH.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_F_SKULL.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_F_SPARK.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_F_SPOON.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_F_VERMIN.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_F_VIPER.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_M_NYX.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_SR_BLOODHOUND.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_SR_BO.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_SR_COLE_THE_BREAKER.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C_SR_IRONCLAD.docx: couldn't unpack docx container: not enough bytes
 [OK] F_01_THRESHOLD.docx -> C:\storyhub\content\flame\01_THRESHOLD.html
      images used: 1, missing: 0
+[OK] L_ECONOMY.docx -> C:\storyhub\content\lore\ECONOMY.html (pandoc-only)
+[OK] L_LORE_BITS.docx -> C:\storyhub\content\lore\LORE_BITS.html (pandoc-only)
 [OK] O_01_ROUTINE.docx -> C:\storyhub\content\order\01_ROUTINE.html
      images used: 0, missing: 0
 [OK] O_02_ECHO.docx -> C:\storyhub\content\order\02_ECHO.html
@@ -13,6 +35,6 @@ MEDIA_DIR: C:\storyhub\media
 [OK] gallery.html -> C:\storyhub\gallery.html
 
 === Summary ===
-Converted: 3
+Converted: 5
 Skipped:   0
-Failed:    0
+Failed:    20
