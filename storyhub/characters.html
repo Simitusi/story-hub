@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Characters</title>
+
+  <link rel="stylesheet" href="css/base.css" />
+</head>
+
+<body class="characters">
+  <nav class="nav">
+    <a href="index.html">Menu</a>
+  </nav>
+
+  <header class="topbar">
+    <h1>Characters</h1>
+    <p class="sub">Generated via Pandoc. Listed via manifest.</p>
+  </header>
+
+  <main class="list">
+    <div id="characterList">Loading…</div>
+  </main>
+
+  <footer class="footer">
+    <a href="index.html">Back to menu</a>
+  </footer>
+
+  <script src="js/navgen.js"></script>
+  <script>
+    buildNav("characters", "characterList", {
+      emptyMessage: "No character pages yet."
+    });
+  </script>
+</body>
+</html>
