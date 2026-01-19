@@ -73,7 +73,7 @@ body.flame::after{
   z-index: -2;
   pointer-events: none;
 
-  background-image: url("../media/hellfirefiends.png");
+  background-image: url("../media/hellfirefiends.webp");
   background-repeat: no-repeat;
   background-position: center;
   background-size: min(100vw, 1100px);
@@ -404,4 +404,5 @@ body.flame .back-to-top:hover {
   background: rgba(160, 40, 40, 0.75);
 }
 body.flame .chapter-content { max-width: 760px; margin: 0 auto; padding: 0 1.25rem 5rem; }
+
 
