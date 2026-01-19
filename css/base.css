@@ -1024,3 +1024,9 @@ body.index .topbar{
   padding-bottom: 1.5rem; /* was 2rem */
 }
 
+
+@media (max-width: 900px){
+  body.flame{
+    background-attachment: scroll;
+  }
+}
