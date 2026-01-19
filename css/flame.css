@@ -318,7 +318,7 @@ body.flame hr {
    ========================= */
 
 body.flame .chapter-gallery{
-  max-width: 980px;
+  max-width: 765px;
   margin: 2.5rem auto 70px;
   padding: 0 22px;
 }
@@ -404,5 +404,4 @@ body.flame .back-to-top:hover {
   background: rgba(160, 40, 40, 0.75);
 }
 body.flame .chapter-content { max-width: 760px; margin: 0 auto; padding: 0 1.25rem 5rem; }
-
 
