@@ -73,7 +73,7 @@ body.flame::after{
   z-index: -2;
   pointer-events: none;
 
-  background-image: url("../media/hellfirefiends.webp");
+  background-image: url("../media/bg.webp");
   background-repeat: no-repeat;
   background-position: center;
   background-size: min(100vw, 1100px);

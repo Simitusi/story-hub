@@ -1,4 +1,4 @@
-STORYHUB build log — 2026-01-19T00:54:06
+STORYHUB build log — 2026-01-19T01:26:08
 ROOT: C:\storyhub
 SOURCE_DIR: C:\storyhub\source-docx
 CONTENT_DIR: C:\storyhub\content
