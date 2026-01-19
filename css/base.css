@@ -1,0 +1,1026 @@
+/* =========================
+   RESET & BASELINE
+   ========================= */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  font-family: Calibri, "Segoe UI", Candara, Arial, sans-serif;
+  line-height: 1.6;
+
+  background: #0f0f12;
+  color: #e8e8e8;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; text-decoration: none; }
+
+button { font-family: inherit; cursor: pointer; }
+
+/* =========================
+   TOPBAR / HEADER
+   ========================= */
+
+.nav {
+  padding: 1rem 1.25rem;
+}
+
+.nav a { opacity: 0.85; }
+.nav a:hover { opacity: 1; }
+
+.topbar {
+  padding: 2.5rem 1.25rem 2rem;
+  text-align: center;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.topbar h1::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 3px;
+  margin: 0.75rem auto 0;
+  background: rgba(220, 70, 70, 0.8);
+}
+
+.topbar .sub {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  color: rgba(232, 232, 232, 0.7);
+  text-align: center;
+}
+
+.sub .emphasis {
+  color: rgba(232, 232, 232, 1);
+}
+
+
+
+
+
+/* =========================
+   INDEX / MENU
+   ========================= */
+
+.menu {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1.75rem;
+}
+
+
+/* =========================
+   INDEX BACKGROUND (smooth + blurry + slow)
+   ========================= */
+
+body.index{
+  --bgx: 50%;                  /* 50% = neutral */
+  --bg-speed: 2400ms;          /* sloooooow */
+  background: #07070a;         /* fallback */
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* One big gradient "canvas" that we slide left/right */
+body.index::before{
+  content:"";
+  position: fixed;
+  inset: -20%;
+  z-index: -2;
+  pointer-events: none;
+
+  /* Dark, not neon. Soft transitions, no seam. */
+  background:
+    /* soft gold bloom */
+    radial-gradient(900px 700px at 18% 35%,
+      rgba(255, 190, 80, 0.10),
+      transparent 60%),
+
+    /* soft ember bloom */
+    radial-gradient(900px 700px at 82% 40%,
+      rgba(255, 90, 40, 0.10),
+      transparent 60%),
+
+    /* the actual "two sides but blended" gradient */
+    linear-gradient(90deg,
+      /* ORDER zone */
+      rgb(7, 6, 3) 0%,
+      rgb(152, 117, 0) 18%,
+      rgb(61, 43, 17) 34%,
+      rgb(37, 27, 13) 44%,
+
+      /* BLEND zone (wide, no contrast line) */
+      rgba(24, 14, 12, 1) 52%,
+      rgba(18, 10, 12, 1) 58%,
+
+      /* FLAME zone */
+      rgb(74, 0, 0) 68%,
+      rgb(255, 34, 0) 78%,
+      rgb(94, 0, 0) 90%,
+      rgb(232, 194, 0) 100%
+    );
+
+  /* Oversize so sliding feels like "pushing" */
+  background-size: 240% 240%;
+  background-position: var(--bgx) 50%;
+
+  /* Blur makes the middle dreamy instead of a seam */
+  filter: blur(26px) saturate(1.05) contrast(1.05);
+  opacity: 0.95;
+
+  transition: background-position var(--bg-speed) cubic-bezier(.16,.84,.2,1);
+  will-change: background-position;
+}
+
+/* Vignette + gentle texture to keep it cinematic, not flat */
+body.index::after{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 50% 40%,
+      rgba(0,0,0,0.15),
+      rgba(0,0,0,0.70) 70%),
+    linear-gradient(180deg,
+      rgba(0,0,0,0.35) 0%,
+      rgba(0,0,0,0.55) 100%);
+
+  opacity: 1;
+}
+
+/* Hover states: just slide the canvas */
+body.index.bg-order{ --bgx: 28%; }
+body.index.bg-flame{ --bgx: 72%; }
+
+/* Optional: even slower on devices that support it */
+@media (prefers-reduced-motion: reduce){
+  body.index{ --bg-speed: 1ms; }
+}
+
+
+/* =========================
+   FLAME SPARKS (right-biased, random-ish, slower)
+   ========================= */
+
+.fx-sparks{
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1400ms ease;
+}
+
+/* Only show sparks when flame is active */
+body.index.bg-flame .fx-sparks{ opacity: 1; }
+
+/* We bias spawn and density toward the RIGHT side:
+   - more dots on the right
+   - fewer/softer dots on the left
+*/
+.fx-sparks::before,
+.fx-sparks::after{
+  content:"";
+  position: absolute;
+  inset: -18%;
+  pointer-events: none;
+
+  /* Mostly-right scatter: larger tile sizes help reduce obvious repetition */
+  background:
+    /* heavy right side */
+    radial-gradient(circle, rgba(255, 220, 130, 0.85) 0 2px, transparent 3px) 88% 118% / 320px 320px repeat,
+    radial-gradient(circle, rgba(255, 140, 60, 0.75) 0 2px, transparent 3px) 78% 130% / 360px 360px repeat,
+    radial-gradient(circle, rgba(255, 70, 40, 0.62) 0 2px, transparent 3px) 92% 125% / 420px 420px repeat,
+
+    /* medium band near center-right */
+    radial-gradient(circle, rgba(255, 200, 95, 0.45) 0 1px, transparent 2px) 62% 128% / 280px 280px repeat,
+    radial-gradient(circle, rgba(255, 120, 55, 0.35) 0 1px, transparent 2px) 58% 135% / 300px 300px repeat;
+
+  mix-blend-mode: screen;
+
+  /* Keep them crisp-ish but not pixel dots */
+  filter: blur(0.7px);
+  opacity: 0.62;
+
+  /* slower */
+  animation: embersDriftA 22s linear infinite;
+  will-change: transform, background-position, opacity;
+}
+
+/* Far layer: even slower + softer + slight scale */
+.fx-sparks::after{
+  opacity: 0.38;
+  filter: blur(1.1px);
+  transform: scale(1.10);
+  animation: embersDriftB 34s linear infinite;
+}
+
+/* Add a gentle mask so left side fades out naturally */
+.fx-sparks{
+  -webkit-mask-image: linear-gradient(90deg,
+    transparent 0%,
+    rgba(0,0,0,0.10) 35%,
+    rgba(0,0,0,0.85) 65%,
+    rgba(0,0,0,1) 100%
+  );
+  mask-image: linear-gradient(90deg,
+    transparent 0%,
+    rgba(0,0,0,0.10) 35%,
+    rgba(0,0,0,0.85) 65%,
+    rgba(0,0,0,1) 100%
+  );
+}
+
+/* Random-ish movement:
+   - background-position moves at different rates per layer
+   - transform “wobbles” sideways in a non-symmetric path
+   - tiny opacity breathing to avoid "loop obviousness"
+*/
+@keyframes embersDriftA{
+  0%{
+    transform: translate3d(0, 18%, 0);
+    background-position:
+      88% 118%,
+      78% 130%,
+      92% 125%,
+      62% 128%,
+      58% 135%;
+    opacity: 0.58;
+  }
+  25%{
+    transform: translate3d(-1.4%, 4%, 0);
+    background-position:
+      90% 74%,
+      76% 66%,
+      94% 70%,
+      60% 80%,
+      56% 86%;
+    opacity: 0.70;
+  }
+  55%{
+    transform: translate3d(2.2%, -7%, 0);
+    background-position:
+      86% 38%,
+      80% 30%,
+      90% 34%,
+      64% 46%,
+      59% 52%;
+    opacity: 0.64;
+  }
+  80%{
+    transform: translate3d(-0.8%, -16%, 0);
+    background-position:
+      92% 10%,
+      74% 6%,
+      96% 12%,
+      58% 18%,
+      55% 24%;
+    opacity: 0.72;
+  }
+  100%{
+    transform: translate3d(1.0%, -26%, 0);
+    background-position:
+      87% -30%,
+      81% -40%,
+      91% -35%,
+      63% -22%,
+      57% -18%;
+    opacity: 0.60;
+  }
+}
+
+@keyframes embersDriftB{
+  0%{
+    transform: translate3d(0, 22%, 0) scale(1.10);
+    background-position:
+      88% 130%,
+      78% 140%,
+      92% 135%,
+      62% 145%,
+      58% 150%;
+    opacity: 0.32;
+  }
+  30%{
+    transform: translate3d(1.8%, 6%, 0) scale(1.10);
+    background-position:
+      86% 92%,
+      82% 86%,
+      90% 88%,
+      66% 100%,
+      60% 105%;
+    opacity: 0.44;
+  }
+  60%{
+    transform: translate3d(-2.4%, -8%, 0) scale(1.10);
+    background-position:
+      90% 50%,
+      76% 42%,
+      94% 45%,
+      60% 56%,
+      57% 60%;
+    opacity: 0.40;
+  }
+  100%{
+    transform: translate3d(1.2%, -28%, 0) scale(1.10);
+    background-position:
+      87% -40%,
+      81% -52%,
+      91% -46%,
+      63% -30%,
+      58% -26%;
+    opacity: 0.34;
+  }
+}
+
+
+
+
+.card {
+  position: relative;
+  padding: 1.75rem 1.5rem;
+  border-radius: 10px;
+
+  background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.12);
+
+  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Main arc cards (Order + Flame) */
+.main-card {
+  grid-column: span 3;
+}
+
+/* Secondary cards */
+.menu > .card:not(.main-card) {
+  grid-column: span 2;
+}
+
+.inline-icon{
+  display: inline-block;
+  height: 3em;
+  width: auto;
+  vertical-align: middle;
+  margin-left: 0.25em;
+  max-width: none;
+  filter: drop-shadow(0 0 0.8px white)
+          drop-shadow(0 0 0.8px white);
+}
+
+
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.card p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+/* =========================
+   ORDER CARD (METALLIC AUTHORITY, HIGH CONTRAST)
+   ========================= */
+
+.card.order {
+  overflow: hidden;
+  border-left: 4px solid rgba(230, 195, 90, 0.85);
+
+  background: linear-gradient(
+    145deg,
+    rgba(255, 213, 0, 0.021),
+    rgba(255, 183, 0, 0.112)
+  );
+}
+
+/* Gold bloom layer */
+.card.order::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  opacity: 0;
+  filter: blur(12px);
+
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255, 230, 170, 0.20), transparent 60%),
+    radial-gradient(circle at 80% 70%, rgba(200, 160, 60, 0.16), transparent 60%),
+    linear-gradient(to bottom, rgba(140, 100, 25, 0.25), transparent 60%);
+
+  transition: opacity 1.8s ease, filter 1.8s ease;
+
+}
+
+/* Metallic sheen sweep */
+.card.order::after {
+  content: "";
+  position: absolute;
+  inset: -35% -70%;
+  pointer-events: none;
+
+  opacity: 0;
+  transform: translateX(-35%) rotate(18deg);
+  filter: blur(5px);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 245, 210, 0.08) 35%,
+      rgba(255, 183, 0, 0.605) 48%,
+      rgba(255, 245, 210, 0.10) 60%,
+      transparent 100%
+    );
+
+  transition: opacity 1.6s ease, transform 1.8s ease, filter 1.8s ease;
+
+  will-change: transform, opacity;
+}
+
+/* UNLEASH (Order edition) */
+.card.order:hover {
+  transform: translateY(-5px) rotate(0.15deg);
+
+  background: linear-gradient(
+    145deg,
+    rgba(95, 63, 0, 0.92),
+    rgba(12, 10, 8, 0.95)
+  );
+
+  border-color: rgb(192, 134, 0);
+
+  
+}
+
+.card.order:hover::before {
+  opacity: 1;
+  filter: blur(9px);
+  animation: orderBloom 6.5s ease-in-out infinite;
+
+}
+
+.card.order:hover::after {
+  opacity: 1;
+  transform: translateX(25%) rotate(18deg);
+  filter: blur(4px);
+  animation: orderSheen 7s ease-in-out infinite;
+}
+
+.card.order:hover h2 {
+  text-shadow:
+    0 0 10px rgba(255, 230, 170, 0.35),
+    0 0 24px rgba(255, 215, 110, 0.22);
+}
+
+.card.order:hover p {
+  opacity: 0.92;
+}
+
+/* slow, expensive-feeling motion */
+@keyframes orderBloom {
+  0%   { opacity: 0.75; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.75; }
+}
+
+@keyframes orderSheen {
+  0%   { opacity: 0.6; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+/* Flame card: slow fire effect */
+
+.card.flame {
+  position: relative;
+  overflow: hidden;
+  border-left: 4px solid rgba(194, 13, 13, 0.95);
+  border-right: 4px solid rgba(194, 13, 13, 0.95);
+  background: linear-gradient(145deg, rgb(41, 0, 0), rgba(94, 19, 0, 0.505));
+
+  transition:
+    background 1.2s ease,
+    box-shadow 1.2s ease,
+    transform 0.6s ease;
+}
+
+/* Fire layer */
+.card.flame::before {
+  content: "";
+  position: absolute;
+  inset: -40% -20% -20% -20%;
+  pointer-events: none;
+
+  /* START INVISIBLE, ANIMATION ATTACHED BUT PAUSED */
+  opacity: 0;
+  filter: blur(10px);
+
+  background:
+    radial-gradient(closest-side at 20% 85%, rgba(255, 190, 80, 0.55), transparent 60%),
+    radial-gradient(closest-side at 55% 90%, rgba(255, 120, 60, 0.55), transparent 62%),
+    radial-gradient(closest-side at 80% 85%, rgba(255, 70, 70, 0.50), transparent 62%),
+    radial-gradient(closest-side at 40% 100%, rgba(255, 210, 120, 0.45), transparent 65%),
+    linear-gradient(to top, rgba(255, 70, 70, 0.35), transparent 60%);
+
+  /* mix-blend-mode is pretty but can cause jank; keep if you want, remove if needed */
+  mix-blend-mode: screen;
+
+  /* IMPORTANT: only transition opacity; don't transition transform on an animated element */
+  transition: opacity 1.4s ease;
+
+  /* Animation is ALWAYS present */
+  animation: flameLick 5.5s ease-in-out infinite;
+  animation-play-state: paused;
+  animation-fill-mode: both;
+
+  will-change: transform, opacity;
+}
+
+/* Embers layer */
+.card.flame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  opacity: 0;
+  filter: blur(1px);
+
+  background:
+    radial-gradient(circle at 20% 80%, rgba(255, 220, 140, 0.25), transparent 40%),
+    radial-gradient(circle at 65% 75%, rgba(255, 140, 90, 0.22), transparent 38%),
+    radial-gradient(circle at 80% 88%, rgba(255, 80, 80, 0.18), transparent 40%);
+
+  transition: opacity 1.2s ease;
+
+  animation: emberBreathe 6.2s ease-in-out infinite;
+  animation-play-state: paused;
+  animation-fill-mode: both;
+
+  will-change: opacity, filter;
+}
+
+/* Hover: fade in + unpause animations */
+.card.flame:hover::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+.card.flame:hover::after {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+.card.flame:hover h2 {
+  text-shadow:
+    0 0 14px rgba(255, 120, 60, 0.55),
+    0 0 36px rgba(255, 70, 70, 0.35);
+}
+
+/* SLOW, HEAVY FIRE MOTION
+   (transform only, no opacity here so fade is controlled by transition) */
+@keyframes flameLick {
+  0%   { transform: translate3d(0px, 20px, 0) scale(1.06) skewX(-0.4deg); }
+  45%  { transform: translate3d(8px, -18px, 0) scale(1.10) skewX(0.4deg); }
+  100% { transform: translate3d(0px, 20px, 0) scale(1.06) skewX(-0.4deg); }
+}
+
+/* Embers: slow breathing instead of flicker */
+@keyframes emberBreathe {
+  0%   { filter: blur(1px);   }
+  50%  { filter: blur(2.4px); }
+  100% { filter: blur(1px);   }
+}
+
+
+/* =========================
+   GALLERY TOGGLE + GRID (GLOBAL)
+   ========================= */
+
+.gallery {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+
+.gallery-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 1rem;
+}
+
+.gallery-title {
+  margin: 0;
+  font-size: 1.05rem;
+  opacity: 0.9;
+}
+
+.gallery-toggle {
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.92);
+
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.gallery-toggle:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(255,255,255,0.22);
+  transform: translateY(-1px);
+}
+
+.gallery-toggle:active {
+  transform: translateY(0px);
+}
+
+.gallery-toggle[aria-expanded="true"] {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.28);
+}
+
+/* Hide/show mechanics */
+.gallery.is-collapsed .gallery-grid,
+.gallery.is-collapsed .gallery-all-grid {
+  display: none;
+}
+
+/* Chapter gallery grid */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.gallery-grid a {
+  display: block;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 208, 0, 0.1);
+  background: rgba(126, 26, 26, 0.03);
+
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.gallery-grid a:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.05);
+}
+
+.gallery-grid img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Missing image warnings */
+.missing-image {
+  padding: 0.9rem;
+  border-radius: 8px;
+  background: rgba(180, 40, 40, 0.16);
+  border: 1px solid rgba(255, 80, 80, 0.22);
+  font-size: 0.85rem;
+}
+
+
+
+/* =========================
+   LIST PAGES (flame.html / order.html / characters.html / lore.html)
+   ========================= */
+
+.list {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 4rem;
+}
+
+.chapter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.chapter-row {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+
+  transition: background 0.15s ease;
+}
+
+.chapter-row:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.chapter-left { min-width: 0; }
+
+.chapter-title {
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chapter-meta {
+  margin-top: 0.2rem;
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.chapter-right {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+/* Badges */
+.badge {
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  opacity: 0.85;
+}
+
+.badge-img { background: rgba(120,120,120,0.3); }
+.badge-missing { background: rgba(180,60,60,0.6); }
+
+/* =========================
+   GLOBAL GALLERY PAGE
+   ========================= */
+
+.gallery-all {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 4rem;
+}
+
+.gallery-all-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.gallery-all-item { text-align: center; }
+
+.gallery-all-item img { border-radius: 4px; }
+
+.gallery-all-item figcaption {
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  opacity: 0.6;
+  word-break: break-all;
+}
+
+/* =========================
+   BACK TO TOP
+   ========================= */
+
+.back-to-top {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+
+  display: grid;
+  place-items: center;
+
+  font-size: 1.1rem;
+  text-decoration: none;
+
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+
+  z-index: 1200;
+}
+
+.back-to-top:hover { background: rgba(255,255,255,0.15); }
+
+/* =========================
+   LIGHTBOX (GLOBAL)
+   ========================= */
+
+.no-scroll { overflow: hidden; }
+.lightbox[hidden] { display: none !important; }
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+}
+
+.lightbox-img {
+  max-width: min(96vw, 1100px);
+  max-height: 90vh;
+  border-radius: 6px;
+  box-shadow: 0 12px 60px rgba(0,0,0,0.65);
+  z-index: 1;
+}
+
+.lightbox button {
+  position: absolute;
+  border: none;
+  display: grid;
+  place-items: center;
+  background: rgba(40,40,40,0.7);
+  color: #fff;
+  opacity: 0.85;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.lightbox button:hover {
+  opacity: 1;
+  background: rgba(60,60,60,0.9);
+}
+
+.lightbox-close {
+  top: 1rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  font-size: 1.6rem;
+  z-index: 2;
+}
+
+.lightbox-prev,
+.lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  font-size: 1.8rem;
+  z-index: 2;
+}
+
+.lightbox-prev { left: 1rem; }
+.lightbox-next { right: 1rem; }
+
+@media (max-width: 600px) {
+  .lightbox-prev { left: 0.5rem; }
+  .lightbox-next { right: 0.5rem; }
+  .lightbox-close { top: 0.5rem; right: 0.5rem; }
+}
+
+/* =========================
+   ANIMATIONS
+   ========================= */
+
+@keyframes flameLick {
+  0%   { transform: translateY(-10px) scale(1.08); opacity: 0.9; }
+  40%  { transform: translateY(-16px) scale(1.11); opacity: 1; }
+  75%  { transform: translateY(-12px) scale(1.09); opacity: 0.85; }
+  100% { transform: translateY(-10px) scale(1.08); opacity: 0.9; }
+}
+
+@keyframes emberFlicker {
+  0%   { opacity: 0.6; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.65; }
+}
+
+::selection {
+  background: rgba(180,180,180,0.35);
+  color: #fff;
+}
+
+/* =========================
+   FOOTER
+   ========================= */
+
+.footer {
+  padding: 3rem 1.25rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+.footer a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+  margin: 0 auto;
+
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+
+  font-size: 0.85rem;
+  text-decoration: none;
+
+  color: rgba(255, 220, 180, 0.85);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  box-sizing: border-box;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
+}
+
+.footer a:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 245, 220, 1);
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.35),
+    0 0 18px rgba(255, 180, 100, 0.25);
+}
+
+.footer a:active {
+  transform: translateY(0);
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* =========================
+   INDEX: pull footer up (remove dead air)
+   ========================= */
+
+body.index .menu{
+  padding-bottom: 1.5rem; /* was 4rem */
+}
+
+body.index .footer{
+  padding-top: 1.25rem;   /* was 3rem */
+  padding-bottom: 1.25rem; 
+  opacity: 0.65;          /* optional, keeps it subtle */
+}
+
+/* If your topbar is also too tall on phone */
+body.index .topbar{
+  padding-bottom: 1.5rem; /* was 2rem */
+}
+

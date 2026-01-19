@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>STORYHUB</title>
+
+  <link rel="stylesheet" href="css/base.css" />
+</head>
+
+<div class="fx-sparks" aria-hidden="true"></div>
+
+
+<body class="index">
+  <header class="topbar">
+    <h1>STORY HUB</h1>
+    <p class="sub">Order mirrors the Flames; They are different sides of the same system.<br>
+    Chronologically, Order comes first, but chaos does not require absolute compilance.
+    </p>
+    <p class="sub"><img src="media/HHchibi.png" class="inline-icon" alt=""><span class="emphasis"><em>—"WHICH MEANS, just do whatever feels right."</em>
+    </span>
+    </p>
+
+  </header>
+
+  <main class="menu">
+
+  <a class="card order main-card" href="order.html">
+    <h2>Order of the Chaos</h2>
+    <p>Chaotic systems inevitably collapse into entropy.</p>
+  </a>
+
+  <a class="card flame main-card" href="flame.html">
+    <h2>Flames of the Chaos</h2>
+    <p>Entropy inevitably reorganizes as rule-bound chaos.</p>
+  </a>
+
+
+    <a class="card" href="characters.html">
+      <h2>Characters</h2>
+      <p>Profiles, sketches, design process.</p>
+    </a>
+
+    <a class="card" href="lore.html">
+      <h2>Lore</h2>
+      <p>Systems, factions, and how everything broke.</p>
+    </a>
+
+    <a class="card" href="gallery.html">
+      <h2>Gallery</h2>
+      <p>All media assets.</p>
+    </a>
+  </main>
+
+  <footer class="footer">
+    <p>The only rules that matter are the rules of chaos.</p>
+  </footer>
+</body>
+</html>
+<script>
+  (function () {
+    const body = document.body;
+    const order = document.querySelector('.menu .card.order');
+    const flame = document.querySelector('.menu .card.flame');
+
+    if (!order || !flame) return;
+
+    const onOrder = () => { body.classList.add('bg-order'); body.classList.remove('bg-flame'); };
+    const onFlame = () => { body.classList.add('bg-flame'); body.classList.remove('bg-order'); };
+    const clear   = () => { body.classList.remove('bg-order', 'bg-flame'); };
+
+    order.addEventListener('mouseenter', onOrder);
+    flame.addEventListener('mouseenter', onFlame);
+    order.addEventListener('mouseleave', clear);
+    flame.addEventListener('mouseleave', clear);
+
+    order.addEventListener('focusin', onOrder);
+    flame.addEventListener('focusin', onFlame);
+    order.addEventListener('focusout', clear);
+    flame.addEventListener('focusout', clear);
+  })();
+</script>
