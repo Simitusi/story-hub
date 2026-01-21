@@ -1,0 +1,308 @@
+/* =========================================================
+   hellhound.css
+   Goal: make Hellhound page look like your Flame chapters/background.
+   - Reuses base.css + flame.css
+   - Applies Flame background even if <body> has no "flame" class
+   - Calibri, readable
+   - Minimal “character page” layout styling only
+   ========================================================= */
+
+/* Reuse your existing site styles */
+@import url("base.css");
+@import url("flame.css");
+
+/* ---------------------------------------------------------
+   Force Flame look even if the HTML body doesn't have .flame
+   (Your flame.css targets body.flame; this bridges that gap.)
+   --------------------------------------------------------- */
+
+html, body{
+  height: 100%;
+  background: #120505; /* prevents white overscroll/canvas flashes */
+}
+
+body{
+  font-family: Calibri, "Segoe UI", Candara, Arial, sans-serif;
+  font-size: 18px;  /* match flame.css */
+  line-height: 1.7; /* match flame.css */
+  color: #f2eaea;
+  background: #120505;
+  position: relative;
+  overflow-x: hidden;
+  z-index: 1;
+
+  /* Stop that “scroll past bounds shows nonsense” behavior */
+  overscroll-behavior: none;
+}
+
+/* Headings: same glow feel as flame */
+body h1,
+body h2{
+  text-shadow:
+    0 0 18px rgba(255, 120, 60, 0.25),
+    0 0 40px rgba(120, 20, 20, 0.15);
+}
+
+/* Flame background canvas (copied from flame.css, but applied to body) */
+body::before{
+  content:"";
+  position: fixed;
+  inset: -25%;
+  z-index: -3;
+  pointer-events: none;
+
+  background:
+    radial-gradient(900px 700px at 70% 40%,
+      rgba(255, 80, 40, 0.14),
+      transparent 60%),
+
+    radial-gradient(700px 600px at 40% 70%,
+      rgba(255, 160, 80, 0.10),
+      transparent 65%),
+
+    linear-gradient(180deg,
+      rgb(18, 5, 5) 0%,
+      rgb(40, 8, 6) 45%,
+      rgb(70, 14, 8) 75%,
+      rgb(20, 6, 6) 100%
+    );
+
+  filter: blur(28px) saturate(1.1);
+  opacity: 0.95;
+}
+
+/* Sigil/logo layer (same path as flame.css expects) */
+body::after{
+  content:"";
+  position: fixed;
+  inset: -20%;
+  z-index: -2;
+  pointer-events: none;
+
+  background-image: url("../media/hellfirefiends.webp");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: min(100vw, 1100px);
+
+  opacity: 0.2;
+  filter: blur(25px);
+  transform: scale(1.08);
+}
+
+/* ---------------------------------------------------------
+   Page structure (your hellhound HTML uses .hh-* classes)
+   Keep it consistent with your chapter widths and spacing.
+   --------------------------------------------------------- */
+
+.hh-wrap{
+  max-width: 760px;         /* matches flame chapter content width */
+  margin: 0 auto;
+  padding: 0 1.25rem 5rem;  /* matches flame chapter padding vibe */
+}
+
+/* Hero: NO full-width bars, just a clean chapter-like header block */
+.hh-hero{
+  padding: 1.25rem 0 0.25rem;
+  background: transparent;
+  border: none;
+}
+
+.hh-hero-inner{
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.hh-title{
+  margin: 0.5rem 0 0.25rem;
+  font-size: 2rem;          /* same scale as flame h1 */
+  font-weight: 600;         /* your base topbar style-ish */
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffd0c0;
+}
+
+.hh-meta{
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+  color: rgba(232, 232, 232, 0.75);
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.hh-meta strong{ color: rgba(232,232,232,1); }
+.hh-dot{ display: none; }
+
+.hh-meta-tag{
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.05);
+  color: rgba(255, 220, 180, 0.85);
+}
+
+.hh-blurb{
+  margin: 0.75rem 0 1.25rem;
+  color: rgba(232, 232, 232, 0.7);
+  max-width: 72ch;
+}
+
+/* Panels: use your “row/card” visual language (subtle glass) */
+.hh-panel{
+  margin: 1.25rem 0;
+  padding: 1.25rem 1.15rem;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.hh-section-title{
+  margin: 0 0 0.8rem;
+  font-size: 1.25rem;
+  color: #ffd0c0;
+  line-height: 1.2;
+}
+
+/* Lists: keep clean, readable, chapter-like */
+.hh-list{
+  margin: 0.25rem 0 0;
+  padding-left: 1.15rem;
+}
+
+.hh-list li{
+  margin: 0.55rem 0;
+}
+
+.hh-list li::marker{
+  color: rgba(255, 120, 60, 0.95);
+}
+
+.hh-nested{
+  margin-top: 0.75rem;
+  padding-left: 1.05rem;
+  border-left: 1px solid rgba(255, 120, 120, 0.18);
+}
+
+/* Your HTML had “cards” in Behavioural core; turn them into simple list again */
+.hh-cards{
+  list-style: disc;
+  padding-left: 1.15rem;
+  margin: 0.25rem 0 0;
+  display: block;
+  gap: 0;
+}
+.hh-cards > li{
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Internal Judge block: slight emphasis only */
+.hh-subblock{
+  margin-top: 0.75rem;
+  padding: 0.9rem 0.95rem;
+  border-radius: 10px;
+  background: rgba(180, 40, 40, 0.12);
+  border: 1px solid rgba(255, 80, 80, 0.18);
+}
+
+/* ---------------------------------------------------------
+   Spoilers (details/summary): match your chapter-row feel
+   --------------------------------------------------------- */
+
+details.spoiler{
+  margin: 1.25rem 0;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.10);
+  overflow: hidden;
+}
+
+details.spoiler > summary{
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+
+  display: grid;
+  gap: 0.25rem;
+}
+
+details.spoiler > summary::-webkit-details-marker{ display:none; }
+
+details.spoiler[open] > summary{
+  background: rgba(255,255,255,0.04);
+}
+
+.spoiler__label{
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: rgba(255, 220, 180, 0.95);
+}
+
+.spoiler__warn{
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.spoiler__body{
+  padding: 0.95rem 1rem 1rem;
+}
+
+/* ---------------------------------------------------------
+   Floating buttons: use your existing back-to-top vibe
+   --------------------------------------------------------- */
+
+.fab{
+  position: fixed;
+  right: 1rem;
+  z-index: 1200;
+
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+
+  background: rgba(120, 30, 30, 0.55);
+  color: #fff;
+
+  border: 1px solid rgba(255,255,255,0.18);
+  text-decoration: none;
+
+  font-size: 0.85rem;
+  font-weight: 600;
+  backdrop-filter: blur(6px);
+}
+
+.fab:hover{
+  background: rgba(160, 40, 40, 0.75);
+}
+
+.fab--menu{ bottom: 4.1rem; }
+.fab--top{ bottom: 1rem; }
+
+.fab.is-hidden{
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Mobile: keep it cheap (you already do this in flame.css too) */
+@media (max-width: 768px){
+  /* Keep your mobile simplification: remove the heavy fixed blur layers */
+  body::before,
+  body::after{
+    content: none !important;
+    display: none !important;
+  }
+
+  body{
+    background:
+      radial-gradient(60% 40% at 25% 15%, rgba(255, 60, 60, 0.20), transparent 70%),
+      radial-gradient(55% 45% at 80% 35%, rgba(120, 0, 0, 0.28), transparent 70%),
+      linear-gradient(180deg, #160000, #000000) !important;
+  }
+}

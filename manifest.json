@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generated_at": "2026-01-19T16:03:44",
+  "generated_at": "2026-01-21T23:24:44",
   "root": "storyhub",
   "arcs": {
     "flame": [
@@ -60,7 +60,17 @@
         }
       }
     ],
-    "characters": [],
+    "characters": [
+      {
+        "id": "C_0_LUCY_HELLHOUND",
+        "type": "C",
+        "arc": "characters",
+        "title": "C 0 LUCY HELLHOUND",
+        "slug": "0-lucy-hellhound",
+        "source": "source-docx/C_0_LUCY_HELLHOUND.docx",
+        "output": "content/characters/0_LUCY_HELLHOUND.html"
+      }
+    ],
     "lore": [
       {
         "id": "L_ECONOMY",

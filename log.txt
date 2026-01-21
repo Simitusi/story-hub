@@ -1,10 +1,10 @@
-STORYHUB build log — 2026-01-19T16:03:44
+STORYHUB build log — 2026-01-21T23:24:44
 ROOT: C:\storyhub
 SOURCE_DIR: C:\storyhub\source-docx
 CONTENT_DIR: C:\storyhub\content
 MEDIA_DIR: C:\storyhub\media
 
-[FAIL] C_0_LUCY_HELLHOUND.docx: couldn't unpack docx container: not enough bytes
+[OK] C_0_LUCY_HELLHOUND.docx -> C:\storyhub\content\characters\0_LUCY_HELLHOUND.html (pandoc-only)
 [FAIL] C_ARK_DANIEL.docx: couldn't unpack docx container: not enough bytes
 [FAIL] C_ARK_LUCAS.docx: couldn't unpack docx container: not enough bytes
 [FAIL] C_F_BLINK.docx: couldn't unpack docx container: not enough bytes
@@ -35,6 +35,6 @@ MEDIA_DIR: C:\storyhub\media
 [OK] gallery.html -> C:\storyhub\gallery.html
 
 === Summary ===
-Converted: 5
+Converted: 6
 Skipped:   0
-Failed:    20
+Failed:    19
