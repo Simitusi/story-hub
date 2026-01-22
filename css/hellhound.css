@@ -290,6 +290,15 @@ details.spoiler[open] > summary{
   pointer-events: none;
 }
 
+/* Reposition existing menu button to top-left */
+.fab--menu{
+  top: 14px;
+  left: 14px;
+  bottom: auto;
+  right: auto;
+}
+
+
 /* Mobile: keep it cheap (you already do this in flame.css too) */
 @media (max-width: 768px){
   /* Keep your mobile simplification: remove the heavy fixed blur layers */
