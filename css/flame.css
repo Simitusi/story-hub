@@ -295,7 +295,7 @@ body.flame p {
   margin: 0 0 1.15em 0;
   text-align: justify;
   text-indent: 0;
-  hyphens: auto;
+  hyphens: none;
 }
 
 /* Prevent weird pandoc "single-line paragraph" spacing from looking broken */
