@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generated_at": "2026-01-21T23:24:44",
+  "generated_at": "2026-01-25T02:10:28",
   "root": "storyhub",
   "arcs": {
     "flame": [
@@ -67,8 +67,17 @@
         "arc": "characters",
         "title": "C 0 LUCY HELLHOUND",
         "slug": "0-lucy-hellhound",
-        "source": "source-docx/C_0_LUCY_HELLHOUND.docx",
+        "source": null,
         "output": "content/characters/0_LUCY_HELLHOUND.html"
+      },
+      {
+        "id": "C_F_SPOON",
+        "type": "C",
+        "arc": "characters",
+        "title": "C F SPOON",
+        "slug": "f-spoon",
+        "source": "source-docx/C_F_SPOON.docx",
+        "output": "content/characters/F_SPOON.html"
       }
     ],
     "lore": [

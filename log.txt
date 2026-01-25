@@ -1,10 +1,10 @@
-STORYHUB build log — 2026-01-21T23:24:44
+STORYHUB build log — 2026-01-25T02:10:28
 ROOT: C:\storyhub
 SOURCE_DIR: C:\storyhub\source-docx
 CONTENT_DIR: C:\storyhub\content
 MEDIA_DIR: C:\storyhub\media
+FLAGS: force_cl=False
 
-[OK] C_0_LUCY_HELLHOUND.docx -> C:\storyhub\content\characters\0_LUCY_HELLHOUND.html (pandoc-only)
 [FAIL] C_ARK_DANIEL.docx: couldn't unpack docx container: not enough bytes
 [FAIL] C_ARK_LUCAS.docx: couldn't unpack docx container: not enough bytes
 [FAIL] C_F_BLINK.docx: couldn't unpack docx container: not enough bytes
@@ -16,7 +16,7 @@ MEDIA_DIR: C:\storyhub\media
 [FAIL] C_F_SCORCH.docx: couldn't unpack docx container: not enough bytes
 [FAIL] C_F_SKULL.docx: couldn't unpack docx container: not enough bytes
 [FAIL] C_F_SPARK.docx: couldn't unpack docx container: not enough bytes
-[FAIL] C_F_SPOON.docx: couldn't unpack docx container: not enough bytes
+[PROTECT] C_F_SPOON.docx -> C:\storyhub\content\characters\F_SPOON.html (existing HTML preserved)
 [FAIL] C_F_VERMIN.docx: couldn't unpack docx container: not enough bytes
 [FAIL] C_F_VIPER.docx: couldn't unpack docx container: not enough bytes
 [FAIL] C_M_NYX.docx: couldn't unpack docx container: not enough bytes
@@ -26,8 +26,8 @@ MEDIA_DIR: C:\storyhub\media
 [FAIL] C_SR_IRONCLAD.docx: couldn't unpack docx container: not enough bytes
 [OK] F_01_THRESHOLD.docx -> C:\storyhub\content\flame\01_THRESHOLD.html
      images used: 1, missing: 0
-[OK] L_ECONOMY.docx -> C:\storyhub\content\lore\ECONOMY.html (pandoc-only)
-[OK] L_LORE_BITS.docx -> C:\storyhub\content\lore\LORE_BITS.html (pandoc-only)
+[PROTECT] L_ECONOMY.docx -> C:\storyhub\content\lore\ECONOMY.html (existing HTML preserved)
+[PROTECT] L_LORE_BITS.docx -> C:\storyhub\content\lore\LORE_BITS.html (existing HTML preserved)
 [OK] O_01_ROUTINE.docx -> C:\storyhub\content\order\01_ROUTINE.html
      images used: 0, missing: 0
 [OK] O_02_ECHO.docx -> C:\storyhub\content\order\02_ECHO.html
@@ -35,6 +35,9 @@ MEDIA_DIR: C:\storyhub\media
 [OK] gallery.html -> C:\storyhub\gallery.html
 
 === Summary ===
-Converted: 6
-Skipped:   0
-Failed:    19
+Converted:  3
+Protected:  3
+Skipped:    0
+Failed:     18
+Manifest:   C:\storyhub\manifest.json
+Discovery:  C:\storyhub\manifest.new.json

@@ -10,7 +10,7 @@ from pathlib import Path
 # =========================
 # Project root resolution
 # =========================
-# Important: PyInstaller --onefile runs from a temp _MEI folder, so __file__ is not your project.
+# PyInstaller --onefile runs from a temp _MEI folder, so __file__ isn't your project.
 # Use sys.executable when frozen so outputs land next to converter.exe (your STORYHUB folder).
 if getattr(sys, "frozen", False):
     ROOT = Path(sys.executable).resolve().parent
@@ -33,6 +33,7 @@ FLAME_CSS = ROOT / "css" / "flame.css"
 ORDER_CSS = ROOT / "css" / "order.css"
 
 MANIFEST_PATH = ROOT / "manifest.json"
+MANIFEST_NEW_PATH = ROOT / "manifest.new.json"
 LOG_PATH = ROOT / "log.txt"
 
 # Global media gallery page (generated each build)
@@ -76,6 +77,10 @@ def slugify(s: str) -> str:
     s = re.sub(r"\s+", "-", s)
     s = re.sub(r"-{2,}", "-", s)
     return s
+
+
+def has_flag(name: str) -> bool:
+    return name in sys.argv
 
 
 def run_pandoc(input_docx: Path, output_html: Path, standalone: bool) -> tuple[bool, str]:
@@ -281,7 +286,6 @@ def lightbox_block() -> str:
 """.strip()
 
 
-
 def chapter_template(
     *,
     title: str,
@@ -444,6 +448,116 @@ def build_global_gallery_page() -> str:
 """
 
 
+def scan_existing_cl_pages(out_dir: Path, initial: str) -> list[dict]:
+    """
+    Build manifest entries from existing HTML in content/characters or content/lore.
+    This decouples navigation from DOCX presence.
+    """
+    arc = "characters" if initial == "C" else "lore"
+    entries: list[dict] = []
+
+    if not out_dir.exists():
+        return entries
+
+    for html in sorted(out_dir.glob("*.html")):
+        slug_base = html.stem  # e.g. "ECONOMY" / "0_LUCY_HELLHOUND"
+        title = f"{initial} {slug_base.replace('_', ' ')}".strip()
+
+        # Source is optional; include it only if it exists
+        source_docx = SOURCE_DIR / f"{initial}_{slug_base}.docx"
+        source_val = None
+        if source_docx.exists():
+            source_val = str(source_docx.relative_to(ROOT)).replace("\\", "/")
+
+        entries.append({
+            "id": f"{initial}_{slug_base}",
+            "type": initial,
+            "arc": arc,
+            "title": title,
+            "slug": slugify(slug_base),
+            "source": source_val,
+            "output": str(html.relative_to(ROOT)).replace("\\", "/"),
+        })
+
+    entries.sort(key=lambda x: x.get("title", ""))
+    return entries
+
+
+def collect_known_ids(manifest: dict) -> set[str]:
+    ids: set[str] = set()
+    arcs = (manifest or {}).get("arcs", {})
+    if not isinstance(arcs, dict):
+        return ids
+    for _, entries in arcs.items():
+        if not isinstance(entries, list):
+            continue
+        for e in entries:
+            if isinstance(e, dict) and "id" in e:
+                ids.add(str(e["id"]))
+    return ids
+
+
+def build_discovery_manifest(existing_manifest: dict) -> dict:
+    """
+    Writes manifest.new.json containing docx items not represented in manifest.json yet.
+    This is your 'check for new files' feature, without letting it overwrite nav truth.
+    """
+    known = collect_known_ids(existing_manifest)
+
+    new_items: list[dict] = []
+    for docx in sorted(SOURCE_DIR.glob("*.docx")):
+        initial = docx.stem[:1].upper()
+        if initial not in {"F", "O", "C", "L"}:
+            continue
+
+        if initial in {"F", "O"}:
+            init, chapnum, rest = parse_docx_name(docx)
+            doc_id = f"{init}_{chapnum}"
+            arc = "flame" if init == "F" else "order"
+            proposed_output = f"content/{arc}/{chapnum}_{rest}.html"
+            title_text = rest.replace("_", " ")
+            title = f"{chapnum} {title_text}"
+            payload = {
+                "id": doc_id,
+                "type": init,
+                "arc": arc,
+                "index": safe_int(chapnum, 0),
+                "title": title,
+                "title_text": title_text,
+                "slug": slugify(title_text),
+                "source": str(docx.relative_to(ROOT)).replace("\\", "/"),
+                "proposed_output": proposed_output,
+            }
+        else:
+            # C/L ids are docx.stem, e.g. L_ECONOMY
+            doc_id = docx.stem
+            arc = "characters" if initial == "C" else "lore"
+            slug_base = docx.stem[2:] if docx.stem.startswith(f"{initial}_") else docx.stem
+            proposed_output = f"content/{arc}/{slug_base}.html"
+            payload = {
+                "id": doc_id,
+                "type": initial,
+                "arc": arc,
+                "title": docx.stem.replace("_", " "),
+                "slug": slugify(slug_base),
+                "source": str(docx.relative_to(ROOT)).replace("\\", "/"),
+                "proposed_output": proposed_output,
+            }
+
+        if payload["id"] not in known:
+            new_items.append(payload)
+
+    return {
+        "schema": 1,
+        "generated_at": now_iso(),
+        "root": str(ROOT.name),
+        "new": new_items,
+        "counts": {
+            "new": len(new_items)
+        }
+    }
+
+
 def main():
     # Ensure folders exist
     SOURCE_DIR.mkdir(parents=True, exist_ok=True)
@@ -454,31 +568,57 @@ def main():
     LORE_DIR.mkdir(parents=True, exist_ok=True)
     MEDIA_DIR.mkdir(parents=True, exist_ok=True)
 
+    force_cl = has_flag("--force-cl")
+
     with LOG_PATH.open("w", encoding="utf-8") as log_fh:
         log(f"STORYHUB build log — {now_iso()}", log_fh)
         log(f"ROOT: {ROOT}", log_fh)
         log(f"SOURCE_DIR: {SOURCE_DIR}", log_fh)
         log(f"CONTENT_DIR: {CONTENT_DIR}", log_fh)
         log(f"MEDIA_DIR: {MEDIA_DIR}", log_fh)
+        log(f"FLAGS: force_cl={force_cl}", log_fh)
         log("", log_fh)
 
         media_index = build_media_index()
 
-        manifest = {
-            "schema": 2,
-            "generated_at": now_iso(),
-            "root": str(ROOT.name),
-            "arcs": {
-                "flame": [],
-                "order": [],
-                "characters": [],
-                "lore": [],
+        # Load existing manifest if it exists (non-destructive behavior)
+        manifest: dict
+        if MANIFEST_PATH.exists():
+            try:
+                manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+                if not isinstance(manifest, dict) or manifest.get("schema") != 2:
+                    raise ValueError("manifest schema mismatch")
+            except Exception:
+                # fall back to fresh if corrupt
+                manifest = {}
+        else:
+            manifest = {}
+
+        if not manifest:
+            manifest = {
+                "schema": 2,
+                "generated_at": now_iso(),
+                "root": str(ROOT.name),
+                "arcs": {
+                    "flame": [],
+                    "order": [],
+                    "characters": [],
+                    "lore": [],
+                }
             }
-        }
+
+        # Always update generated_at
+        manifest["generated_at"] = now_iso()
+        manifest["root"] = str(ROOT.name)
 
         converted = 0
         skipped = 0
         failed = 0
+        protected = 0
+
+        # Rebuild F/O from docx (these are meant to be regenerated)
+        rebuilt_flame: list[dict] = []
+        rebuilt_order: list[dict] = []
 
         for docx in sorted(SOURCE_DIR.glob("*.docx")):
             initial = docx.stem[:1].upper()
@@ -523,12 +663,12 @@ def main():
                 converted += 1
 
                 chapter_index = safe_int(chapnum, 0)
-                chapter_id = f"{init}_{chapnum}"  # stable ID, e.g. F_01
+                chapter_id = f"{init}_{chapnum}"  # stable ID, e.g. F_01 / O_02
 
                 entry = {
                     "id": chapter_id,
-                    "type": init,  # "F" or "O"
-                    "arc": category,  # "flame" or "order"
+                    "type": init,
+                    "arc": category,
                     "index": chapter_index,
                     "title": title,
                     "title_text": title_text,
@@ -543,18 +683,23 @@ def main():
                     },
                 }
 
-                manifest["arcs"][category].append(entry)
+                (rebuilt_flame if category == "flame" else rebuilt_order).append(entry)
 
                 log(f"[OK] {docx.name} -> {out_path}", log_fh)
                 log(f"     images used: {len(used_imgs)}, missing: {len(missing_imgs)}", log_fh)
                 if err:
                     log(f"     pandoc stderr: {err}", log_fh)
 
-            # C/L: pandoc-only conversion (standalone HTML), no hooks/template
+            # C/L: protected conversion (only convert if missing, unless --force-cl)
             else:
                 out_dir = CHAR_DIR if initial == "C" else LORE_DIR
                 out_name = docx.stem[2:] + ".html" if docx.stem.startswith(f"{initial}_") else docx.stem + ".html"
                 out_path = out_dir / out_name
+
+                if out_path.exists() and not force_cl:
+                    protected += 1
+                    log(f"[PROTECT] {docx.name} -> {out_path} (existing HTML preserved)", log_fh)
+                    continue
 
                 ok, err = run_pandoc(docx, out_path, standalone=True)
                 if not ok:
@@ -563,31 +708,24 @@ def main():
                     continue
 
                 converted += 1
-
-                arc = "characters" if initial == "C" else "lore"
-                raw_title = docx.stem.replace("_", " ")
-                slug_base = docx.stem[2:] if docx.stem.startswith(f"{initial}_") else docx.stem
-
-                entry = {
-                    "id": docx.stem,
-                    "type": initial,  # "C" or "L"
-                    "arc": arc,
-                    "title": raw_title,
-                    "slug": slugify(slug_base),
-                    "source": str(docx.relative_to(ROOT)).replace("\\", "/"),
-                    "output": str(out_path.relative_to(ROOT)).replace("\\", "/"),
-                }
-
-                manifest["arcs"][arc].append(entry)
                 log(f"[OK] {docx.name} -> {out_path} (pandoc-only)", log_fh)
 
-        # Deterministic arc ordering
-        manifest["arcs"]["flame"].sort(key=lambda x: x.get("index", 0))
-        manifest["arcs"]["order"].sort(key=lambda x: x.get("index", 0))
-        manifest["arcs"]["characters"].sort(key=lambda x: x.get("title", ""))
-        manifest["arcs"]["lore"].sort(key=lambda x: x.get("title", ""))
+        # Install rebuilt F/O into manifest
+        rebuilt_flame.sort(key=lambda x: x.get("index", 0))
+        rebuilt_order.sort(key=lambda x: x.get("index", 0))
+        manifest["arcs"]["flame"] = rebuilt_flame
+        manifest["arcs"]["order"] = rebuilt_order
 
+        # Characters/Lore: derive existence from HTML outputs (stable nav truth)
+        manifest["arcs"]["characters"] = scan_existing_cl_pages(CHAR_DIR, "C")
+        manifest["arcs"]["lore"] = scan_existing_cl_pages(LORE_DIR, "L")
+
+        # Write manifest.json (schema v2)
         MANIFEST_PATH.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+
+        # Discovery report for new files
+        discovery = build_discovery_manifest(manifest)
+        MANIFEST_NEW_PATH.write_text(json.dumps(discovery, ensure_ascii=False, indent=2), encoding="utf-8")
 
         # Build global media gallery page
         gallery_html = build_global_gallery_page()
@@ -596,13 +734,20 @@ def main():
 
         log("", log_fh)
         log("=== Summary ===", log_fh)
-        log(f"Converted: {converted}", log_fh)
-        log(f"Skipped:   {skipped}", log_fh)
-        log(f"Failed:    {failed}", log_fh)
+        log(f"Converted:  {converted}", log_fh)
+        log(f"Protected:  {protected}", log_fh)
+        log(f"Skipped:    {skipped}", log_fh)
+        log(f"Failed:     {failed}", log_fh)
+        log(f"Manifest:   {MANIFEST_PATH}", log_fh)
+        log(f"Discovery:  {MANIFEST_NEW_PATH}", log_fh)
 
-    print(f"[INFO] Done. Manifest: {MANIFEST_PATH}")
-    print(f"[INFO] Gallery:  {GALLERY_PAGE_PATH}")
-    print(f"[INFO] Log:      {LOG_PATH}")
+    print(f"[INFO] Done.")
+    print(f"[INFO] Manifest:   {MANIFEST_PATH}")
+    print(f"[INFO] Discovery:  {MANIFEST_NEW_PATH}")
+    print(f"[INFO] Gallery:    {GALLERY_PAGE_PATH}")
+    print(f"[INFO] Log:        {LOG_PATH}")
+    if force_cl:
+        print(f"[INFO] Ran with --force-cl (Characters/Lore may have been overwritten).")
 
 
 if __name__ == "__main__":
