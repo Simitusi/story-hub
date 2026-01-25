@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generated_at": "2026-01-25T02:10:28",
+  "generated_at": "2026-01-25T23:07:31",
   "root": "storyhub",
   "arcs": {
     "flame": [
@@ -20,6 +20,23 @@
         "missing_images": [],
         "counts": {
           "images_used": 1,
+          "images_missing": 0
+        }
+      },
+      {
+        "id": "F_02",
+        "type": "F",
+        "arc": "flame",
+        "index": 2,
+        "title": "02 DROUGHTBREAK",
+        "title_text": "DROUGHTBREAK",
+        "slug": "droughtbreak",
+        "source": "source-docx/F_02_DROUGHTBREAK.docx",
+        "output": "content/flame/02_DROUGHTBREAK.html",
+        "images": [],
+        "missing_images": [],
+        "counts": {
+          "images_used": 0,
           "images_missing": 0
         }
       }

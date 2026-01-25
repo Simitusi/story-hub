@@ -1,4 +1,4 @@
-STORYHUB build log — 2026-01-25T02:10:28
+STORYHUB build log — 2026-01-25T23:07:31
 ROOT: C:\storyhub
 SOURCE_DIR: C:\storyhub\source-docx
 CONTENT_DIR: C:\storyhub\content
@@ -26,6 +26,8 @@ FLAGS: force_cl=False
 [FAIL] C_SR_IRONCLAD.docx: couldn't unpack docx container: not enough bytes
 [OK] F_01_THRESHOLD.docx -> C:\storyhub\content\flame\01_THRESHOLD.html
      images used: 1, missing: 0
+[OK] F_02_DROUGHTBREAK.docx -> C:\storyhub\content\flame\02_DROUGHTBREAK.html
+     images used: 0, missing: 0
 [PROTECT] L_ECONOMY.docx -> C:\storyhub\content\lore\ECONOMY.html (existing HTML preserved)
 [PROTECT] L_LORE_BITS.docx -> C:\storyhub\content\lore\LORE_BITS.html (existing HTML preserved)
 [OK] O_01_ROUTINE.docx -> C:\storyhub\content\order\01_ROUTINE.html
@@ -35,7 +37,7 @@ FLAGS: force_cl=False
 [OK] gallery.html -> C:\storyhub\gallery.html
 
 === Summary ===
-Converted:  3
+Converted:  4
 Protected:  3
 Skipped:    0
 Failed:     18
