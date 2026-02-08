@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glossary</title>
+  <link rel="stylesheet" href="../../../css/lore.css" />
+</head>
+
+<body class="lore-page" id="top">
+  <header class="lore-hero">
+    <div class="lore-wrap lore-hero-inner">
+      <div class="lore-kicker">Lore</div>
+      <h1 class="lore-title">Glossary</h1>
+      <div class="lore-meta">
+        <span class="lore-tag">terms-and-labels</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="lore-wrap lore-main" role="main">
+    
+    <section class="lore-panel">
+      <div class="lore-subblock">
+        <p><strong>@PYRA</strong></p>
+<p><em>Pyradrenaline Response Agonist PR-A4</em><br />
+Hardline combat stim built to hijack fight-or-flight and weld the throttle open. In a regular wastelander, one dose is already enough to make them unstable, hyper-aggressive and reckless; two usually means system collapse or psychotic break. It kills pain, spikes strength and sensory drive, and drags buried emotions to the surface in one violent rush.</p>
+<p>A tiny minority of people with freakishly high neurostimulant tolerance can <em>stack</em> doses into distinct tiers of effect instead of just dying; those are the ones everyone tells horror stories about when they say <em>“she’s on Pyra again.”</em></p>
+<p><strong>@RZ</strong></p>
+<p><em>Razine Hydrochloride</em><br />
+Nerve-scrambler “calm.” Takes the edge off panic and rage without making you sleepy; long-term users get emotional flatline and hand tremors.</p>
+<p><strong>@HUSH</strong></p>
+<p><em>Hypothalamic Suppression Serum (HSS-3)</em><br />
+Turns down fear, startle reflex, and guilt. People on Hush can walk through gunfire with a blank face; when it wears off, nightmares hit like a truck.</p>
+<p><strong>@Gravewater</strong></p>
+<p><em>Post-necrotic Cellular Buffer Solvent G-17</em><br />
+Cheap injectable that lets people run on zero sleep for a day or two by cannibalizing their own reserves. After a binge, users crash like corpses, hence the name.</p>
+<p><strong>@AX-7</strong></p>
+<p><em>Adrenergic Xenostimulant Compound 7</em><br />
+Classic combat stim: faster reflexes, boosted strength, pain barely registers. Overuse shreds the cardiovascular system; vein blowouts are a known side effect.</p>
+<p><strong>@Blue Wire</strong></p>
+<p><em>Neuroconductive Modulator NEU-Δ7</em><br />
+Focus drug popular with techs and snipers; sharpens fine motor control, slows subjective time a bit. Users stare too long, forget they have a body until it cramps.</p>
+<p><strong>@Moth/M.O.T.H.</strong></p>
+<p><em>Mono-Oxidative Thalamic Hallucinogen</em><br />
+Soft hallucinations, drifting lights, quiet voices; often used in dens to “float” above reality. Long-term users get persistent visual snow and afterimages.</p>
+<p><strong>@Glass</strong></p>
+<p><em>Crystalline Cortical Agonist CCA-3</em><br />
+Hyper-clarity high: everything feels sharp, clean, solvable. Then comes the crash: indecision, intrusive thoughts, paralysis. Addictive as hell among planners and tacticians.</p>
+<p><strong>@Halo</strong></p>
+<p><em>Halophrenyl Nocturate</em><br />
+Sleep isn’t guaranteed in the wastes, so people fake it chemically. Halo knocks you out fast and deep, but REM is chaotic; many users wake up more unstable than before.</p>
+<p><strong>@FOG</strong></p>
+<p><em>Fronto-Occipital GABA Enhancer</em><br />
+Anti-flashback drug. Blurs memory formation and emotional tagging; soldiers, raiders, and slaves use it to erase specific nights. Overuse makes people permanently “distant.”</p>
+<p><strong>@SNAP</strong></p>
+<p><em>Synaptic Norepinephrine Acceleration Protocol (SN-αP)</em><br />
+Short, vicious burst stim. Fifteen to thirty seconds of speed and violence, then shaking and nausea. Street brawlers love it because it turns the opening move into a kill-shot.</p>
+<p><strong>@Echo dust</strong></p>
+<p><em>Acoustic Sensory Potentiator ASP-9 (Microgranular)</em><br />
+Snorted powder that jacks up hearing and vibration sense; scouts swear by it. Side effects: tinnitus, sensory overload, paranoia about sounds no one else hears.</p>
+
+      </div>
+    </section>
+  </main>
+
+  <a class="fab fab--menu" href="../../../lore.html" title="Back to lore menu">Menu</a>
+  <button class="fab fab--top is-hidden" id="backToTop" type="button" title="Back to top">Top</button>
+
+  <script>
+    (function () {
+      const btn = document.getElementById("backToTop");
+      if (!btn) return;
+
+      function onScroll() {
+        if (window.scrollY > 300) btn.classList.remove("is-hidden");
+        else btn.classList.add("is-hidden");
+      }
+
+      btn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+</body>
+</html>
