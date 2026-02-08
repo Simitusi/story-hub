@@ -1,6 +1,6 @@
 /* STORYHUB navgen.js
    Runtime navigation builder for static pages.
-   Reads /manifest.json (schema v2) and renders arc lists.
+   Reads manifest.json (schema v2) and renders arc lists.
 
    Public API:
      buildNav(arc, mountId, options?)
@@ -54,14 +54,48 @@
     return el("span", className || "badge", text);
   }
 
+  // -------------------------
+  // IMPORTANT: Site base resolver (GitHub Pages-safe)
+  // -------------------------
+  function getSiteBase() {
+    // Goal: return a base URL that points to the repo root on GitHub Pages,
+    // regardless of how deep we are in /content/... pages.
+    //
+    // Example:
+    //   https://user.github.io/repo/content/lore/a/b.html
+    // -> base: https://user.github.io/repo/
+    //
+    // If /content/ isn't in the path (e.g., you are on /repo/lore.html),
+    // base becomes the current directory (which is still under /repo/).
+    const p = window.location.pathname; // includes /repo/... on GH Pages
+    const idx = p.indexOf("/content/");
+
+    // If inside /content/... slice everything before it, keep trailing slash.
+    if (idx >= 0) {
+      const basePath = p.slice(0, idx + 1); // include trailing slash
+      return window.location.origin + basePath;
+    }
+
+    // Otherwise, base is the directory of current page
+    // e.g. /repo/lore.html -> /repo/
+    const dir = p.endsWith("/") ? p : p.replace(/[^/]+$/, "");
+    return window.location.origin + dir;
+  }
+
+  function toAbsoluteFromSiteBase(relativePath) {
+    const base = getSiteBase();
+    return new URL(relativePath, base).toString();
+  }
+
   async function fetchManifest(manifestPath) {
-    const url = new URL(manifestPath, document.baseURI).toString();
+    // FIX: don't resolve against document.baseURI (which changes on nested pages)
+    // Resolve against repo/site base instead.
+    const url = toAbsoluteFromSiteBase(manifestPath);
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) {
       throw new Error(`Failed to load manifest (${res.status} ${res.statusText})`);
     }
-    const data = await res.json();
-    return data;
+    return await res.json();
   }
 
   function pickArcEntries(manifest, arc) {
@@ -119,12 +153,15 @@
 
   function makeRow(entry, options, currentPath) {
     const output = normalizePath(entry.output);
-    const href = output;
+
+    // FIX: build absolute link from repo/site base (GH Pages-safe)
+    const hrefAbs = toAbsoluteFromSiteBase(output);
 
     const row = el("a", "chapter-row");
-    row.href = href;
+    row.href = hrefAbs;
 
     // Active highlight: match by suffix so it still works under /<repo>/... on GitHub Pages
+    // We compare normalized pathname (no origin) to output (also no origin).
     if (output && currentPath.endsWith(output)) {
       row.classList.add("active");
       row.setAttribute("aria-current", "page");
@@ -132,7 +169,11 @@
 
     const left = el("div", "chapter-left");
     const titleText = humanizeSegment(leafTitleFromEntry(entry));
-    const title = el("div", "chapter-title", safeText(titleText || entry.title || entry.title_text || entry.id || href));
+    const title = el(
+      "div",
+      "chapter-title",
+      safeText(titleText || entry.title || entry.title_text || entry.id || output)
+    );
     left.appendChild(title);
 
     const metaBits = [];
@@ -192,7 +233,7 @@
         continue;
       }
 
-      const file = parts.pop(); // last is filename
+      parts.pop(); // last is filename
       const folderParts = parts;
 
       let node = root;
