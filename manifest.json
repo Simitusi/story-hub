@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generated_at": "2026-01-25T23:07:31",
+  "generated_at": "2026-02-08T23:06:31",
   "root": "storyhub",
   "arcs": {
     "flame": [
@@ -79,42 +79,156 @@
     ],
     "characters": [
       {
-        "id": "C_0_LUCY_HELLHOUND",
+        "id": "fiends/BLINK",
         "type": "C",
         "arc": "characters",
-        "title": "C 0 LUCY HELLHOUND",
-        "slug": "0-lucy-hellhound",
-        "source": null,
-        "output": "content/characters/0_LUCY_HELLHOUND.html"
+        "index": 0,
+        "title": "BLINK",
+        "title_text": "BLINK",
+        "slug": "blink",
+        "category": "fiends",
+        "source": "source-docx/characters/fiends/BLINK.docx",
+        "output": "content/characters/fiends/blink.html",
+        "counts": {
+          "images_missing": 0
+        }
       },
       {
-        "id": "C_F_SPOON",
+        "id": "fiends/LUCY_HELLHOUND",
         "type": "C",
         "arc": "characters",
-        "title": "C F SPOON",
-        "slug": "f-spoon",
-        "source": "source-docx/C_F_SPOON.docx",
-        "output": "content/characters/F_SPOON.html"
+        "index": 0,
+        "title": "LUCY HELLHOUND",
+        "title_text": "LUCY HELLHOUND",
+        "slug": "lucy-hellhound",
+        "category": "fiends",
+        "source": "source-docx/characters/fiends/LUCY_HELLHOUND.docx",
+        "output": "content/characters/fiends/lucy-hellhound.html",
+        "counts": {
+          "images_missing": 0
+        }
+      },
+      {
+        "id": "fiends/SKULL",
+        "type": "C",
+        "arc": "characters",
+        "index": 0,
+        "title": "SKULL",
+        "title_text": "SKULL",
+        "slug": "skull",
+        "category": "fiends",
+        "source": "source-docx/characters/fiends/SKULL.docx",
+        "output": "content/characters/fiends/skull.html",
+        "counts": {
+          "images_missing": 0
+        }
       }
     ],
     "lore": [
       {
-        "id": "L_ECONOMY",
+        "id": "ecology_and_biology/fauna/DRIFTBEASTS",
         "type": "L",
         "arc": "lore",
-        "title": "L ECONOMY",
-        "slug": "economy",
-        "source": "source-docx/L_ECONOMY.docx",
-        "output": "content/lore/ECONOMY.html"
+        "kind": "page",
+        "category": "ecology-and-biology",
+        "title": "DRIFTBEASTS",
+        "title_text": "DRIFTBEASTS",
+        "slug": "driftbeasts",
+        "source": "source-docx/lore/ecology_and_biology/fauna/DRIFTBEASTS.docx",
+        "output": "content/lore/ecology_and_biology/fauna/driftbeasts.html",
+        "counts": {
+          "images_missing": 0
+        }
       },
       {
-        "id": "L_LORE_BITS",
+        "id": "ecology_and_biology/fauna/IRON_GRAZERS",
         "type": "L",
         "arc": "lore",
-        "title": "L LORE BITS",
-        "slug": "lore-bits",
-        "source": "source-docx/L_LORE_BITS.docx",
-        "output": "content/lore/LORE_BITS.html"
+        "kind": "page",
+        "category": "ecology-and-biology",
+        "title": "IRON GRAZERS",
+        "title_text": "IRON GRAZERS",
+        "slug": "iron-grazers",
+        "source": "source-docx/lore/ecology_and_biology/fauna/IRON_GRAZERS.docx",
+        "output": "content/lore/ecology_and_biology/fauna/iron-grazers.html",
+        "counts": {
+          "images_missing": 0
+        }
+      },
+      {
+        "id": "ecology_and_biology/fauna/MERCY_BEASTS",
+        "type": "L",
+        "arc": "lore",
+        "kind": "page",
+        "category": "ecology-and-biology",
+        "title": "MERCY BEASTS",
+        "title_text": "MERCY BEASTS",
+        "slug": "mercy-beasts",
+        "source": "source-docx/lore/ecology_and_biology/fauna/MERCY_BEASTS.docx",
+        "output": "content/lore/ecology_and_biology/fauna/mercy-beasts.html",
+        "counts": {
+          "images_missing": 0
+        }
+      },
+      {
+        "id": "ecology_and_biology/fauna/PYRE_HOUNDS",
+        "type": "L",
+        "arc": "lore",
+        "kind": "page",
+        "category": "ecology-and-biology",
+        "title": "PYRE HOUNDS",
+        "title_text": "PYRE HOUNDS",
+        "slug": "pyre-hounds",
+        "source": "source-docx/lore/ecology_and_biology/fauna/PYRE_HOUNDS.docx",
+        "output": "content/lore/ecology_and_biology/fauna/pyre-hounds.html",
+        "counts": {
+          "images_missing": 0
+        }
+      },
+      {
+        "id": "ecology_and_biology/fauna/SIGNAL_EATERS",
+        "type": "L",
+        "arc": "lore",
+        "kind": "page",
+        "category": "ecology-and-biology",
+        "title": "SIGNAL EATERS",
+        "title_text": "SIGNAL EATERS",
+        "slug": "signal-eaters",
+        "source": "source-docx/lore/ecology_and_biology/fauna/SIGNAL_EATERS.docx",
+        "output": "content/lore/ecology_and_biology/fauna/signal-eaters.html",
+        "counts": {
+          "images_missing": 0
+        }
+      },
+      {
+        "id": "ecology_and_biology/fauna/SKARNS",
+        "type": "L",
+        "arc": "lore",
+        "kind": "page",
+        "category": "ecology-and-biology",
+        "title": "SKARNS",
+        "title_text": "SKARNS",
+        "slug": "skarns",
+        "source": "source-docx/lore/ecology_and_biology/fauna/SKARNS.docx",
+        "output": "content/lore/ecology_and_biology/fauna/skarns.html",
+        "counts": {
+          "images_missing": 0
+        }
+      },
+      {
+        "id": "terms_and_labels/Glossary",
+        "type": "L",
+        "arc": "lore",
+        "kind": "page",
+        "category": "terms-and-labels",
+        "title": "Glossary",
+        "title_text": "Glossary",
+        "slug": "glossary",
+        "source": "source-docx/lore/terms_and_labels/Glossary.docx",
+        "output": "content/lore/terms_and_labels/glossary.html",
+        "counts": {
+          "images_missing": 0
+        }
       }
     ]
   }

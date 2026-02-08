@@ -1,0 +1,542 @@
+/* =========================================================
+   fiends.css (FULL)
+   Vibe: Hellfire Fiends dossier
+   - scorched, stamped, overheated, slightly unstable
+   - keeps your flame backdrop + sigil, but less "clean UI"
+   - imports base.css + flame.css
+   ========================================================= */
+
+@import url("base.css");
+@import url("flame.css");
+
+/* -----------------------------
+   Theme tokens
+   ----------------------------- */
+:root{
+  --bg0: #120505;
+  --bg1: #1a0504;
+  --bg2: #050000;
+
+  --ink: #f2eaea;
+  --ink-dim: rgba(232,232,232,0.74);
+
+  --heat: rgba(255, 90, 40, 0.55);
+  --heat2: rgba(255, 140, 90, 0.30);
+  --ember: rgba(255, 120, 70, 0.95);
+
+  --line: rgba(255,255,255,0.10);
+  --line-heat: rgba(255, 150, 110, 0.20);
+
+  --shadow0: rgba(0,0,0,0.35);
+  --shadow1: rgba(0,0,0,0.55);
+
+  --panel-r: 14px;
+  --sub-r: 14px;
+}
+
+/* -----------------------------
+   Global
+   ----------------------------- */
+
+html, body{
+  height: 100%;
+  background: var(--bg0);
+}
+
+body{
+  font-family: Calibri, "Segoe UI", Candara, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.72;
+  color: var(--ink);
+
+  background: var(--bg0);
+  position: relative;
+  overflow-x: hidden;
+  z-index: 1;
+
+  overscroll-behavior: none;
+}
+
+/* Headings: warning heat, not soft glow */
+body h1,
+body h2,
+body h3{
+  text-shadow:
+    0 0 6px rgba(255, 90, 40, 0.45),
+    0 0 22px rgba(120, 10, 10, 0.55);
+}
+
+/* -----------------------------
+   Flame background canvas
+   ----------------------------- */
+
+body::before{
+  content:"";
+  position: fixed;
+  inset: -25%;
+  z-index: -3;
+  pointer-events: none;
+
+  background:
+    radial-gradient(900px 700px at 68% 42%,
+      rgba(255, 80, 40, 0.16),
+      transparent 60%),
+
+    radial-gradient(700px 600px at 42% 72%,
+      rgba(255, 140, 70, 0.12),
+      transparent 65%),
+
+    linear-gradient(180deg,
+      rgb(18, 5, 5) 0%,
+      rgb(42, 6, 4) 55%,
+      rgb(18, 5, 5) 100%
+    );
+
+  filter: blur(28px) saturate(1.12);
+  opacity: 0.96;
+}
+
+/* Sigil layer */
+body::after{
+  content:"";
+  position: fixed;
+  inset: -20%;
+  z-index: -2;
+  pointer-events: none;
+
+  background-image: url("../media/hellfirefiends.webp");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: min(100vw, 1100px);
+
+  opacity: 0.18;
+  filter: blur(24px);
+  transform: scale(1.08);
+}
+
+/* Grit overlay: dossier dirt, not UI kit perfection */
+.hh-main::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.065;
+
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.22) 1px, transparent 1.6px),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,0.18) 1px, transparent 1.7px),
+    radial-gradient(circle at 40% 85%, rgba(255,120,80,0.22) 1px, transparent 2px);
+
+  background-size: 120px 120px, 160px 160px, 220px 220px;
+  background-position: 0 0, 40px 60px, 90px 110px;
+}
+
+/* -----------------------------
+   Layout skeleton (hh-*)
+   ----------------------------- */
+
+.hh-wrap{
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 1.25rem 5.8rem;
+}
+
+/* Hero: dossier header */
+.hh-hero{
+  padding: 1.5rem 0 1.05rem;
+  background: transparent;
+}
+
+.hh-hero-inner{
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* Title: stamped, industrial */
+.hh-title{
+  margin: 0.75rem 0 0.2rem;
+  font-size: 2.45rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ffd4c7;
+  position: relative;
+}
+
+/* Heat bar underline */
+.hh-title::after{
+  content:"";
+  display:block;
+  margin-top: 0.7rem;
+  height: 2px;
+  width: min(560px, 95%);
+  background:
+    linear-gradient(90deg,
+      rgba(255,120,80,0.0),
+      rgba(255,120,80,0.95),
+      rgba(255,120,80,0.0));
+  opacity: 0.92;
+}
+
+/* Meta tags: branded labels, not pills */
+.hh-meta{
+  margin-top: 0.95rem;
+  font-size: 0.88rem;
+  color: var(--ink-dim);
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.hh-meta-tag{
+  padding: 0.22rem 0.72rem;
+  border-radius: 4px; /* less cute */
+  border: 1px solid rgba(255, 160, 120, 0.24);
+  background: rgba(30,0,0,0.55);
+  color: rgba(255, 224, 200, 0.95);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+.hh-dot{ display: none; }
+
+/* -----------------------------
+   Panels: “file sleeve” + controlled damage
+   ----------------------------- */
+
+.hh-panel{
+  margin: 1.35rem 0;
+  padding: 1.2rem 1.2rem;
+
+  position: relative;
+  border-radius: 14px 10px 16px 12px; /* asymmetry */
+  overflow: hidden;
+
+  background:
+    linear-gradient(170deg, rgba(15,0,0,0.70), rgba(0,0,0,0.34)),
+    radial-gradient(900px 240px at 18% -6%, rgba(255, 70, 40, 0.12), transparent 70%);
+
+  border: 1px solid rgba(255, 150, 110, 0.19);
+
+  box-shadow:
+    0 22px 50px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* Burn vignette + subtle grid + scar line */
+.hh-panel::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+
+  background:
+    radial-gradient(620px 260px at 0% 0%, rgba(255, 80, 50, 0.12), transparent 60%),
+    radial-gradient(520px 230px at 100% 0%, rgba(255, 180, 110, 0.07), transparent 65%),
+
+    /* micro grid */
+    linear-gradient(transparent 95%, rgba(255,120,80,0.08) 96%, transparent 97%),
+    linear-gradient(90deg, transparent 95%, rgba(255,120,80,0.06) 96%, transparent 97%),
+
+    /* scar line */
+    linear-gradient(110deg, transparent 0 45%, rgba(255,120,80,0.045) 45% 46.5%, transparent 46.5% 100%);
+
+  background-size:
+    auto, auto,
+    26px 26px,
+    26px 26px,
+    auto;
+
+  opacity: 0.88;
+}
+
+/* Section heading: dossier header */
+.hh-section-title{
+  margin: 0 0 0.85rem;
+  font-size: 1.16rem;
+  font-weight: 800;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(255, 220, 200, 0.96);
+}
+
+/* -----------------------------
+   Subblocks: compressed notes, left spine
+   ----------------------------- */
+
+.hh-subblock{
+  margin-top: 0.95rem;
+  padding: 1.05rem 1.1rem 1.05rem 1.25rem;
+
+  border-radius: var(--sub-r);
+  background: rgba(0,0,0,0.42);
+
+  border: 1px solid rgba(255, 110, 70, 0.26);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.03),
+    0 10px 26px rgba(0,0,0,0.35);
+
+  position: relative;
+}
+
+/* left spine */
+.hh-subblock::before{
+  content:"";
+  position:absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  border-radius: var(--sub-r) 0 0 var(--sub-r);
+
+  background:
+    linear-gradient(180deg,
+      rgba(255,120,80,0.92),
+      rgba(120,10,10,0.0));
+  opacity: 0.90;
+}
+
+/* Paragraph rhythm */
+.hh-subblock p{ margin: 0.7rem 0; }
+.hh-subblock p:first-child{ margin-top: 0; }
+.hh-subblock p:last-child{ margin-bottom: 0; }
+
+/* Headings inside blocks: brutal, stamped */
+.hh-subblock h2,
+.hh-subblock h3{
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  font-weight: 800;
+  margin-top: 1.25rem;
+  margin-bottom: 0.35rem;
+}
+
+.hh-subblock h2{
+  font-size: 1.18rem;
+  color: rgba(255, 220, 200, 0.96);
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(255, 140, 100, 0.18);
+}
+
+.hh-subblock h3{
+  font-size: 1.05rem;
+  color: rgba(255, 205, 185, 0.90);
+}
+
+/* Strong emphasis: hot core */
+.hh-subblock strong{
+  color: rgba(255, 235, 220, 0.98);
+  text-shadow: 0 0 18px rgba(255, 120, 80, 0.12);
+}
+
+/* Lists */
+.hh-list{
+  margin: 0.3rem 0 0;
+  padding-left: 1.15rem;
+}
+.hh-list li{ margin: 0.6rem 0; }
+.hh-list li::marker{ color: var(--ember); }
+
+/* Nested notes: margin scribble */
+.hh-nested{
+  margin-top: 0.9rem;
+  padding-left: 1.05rem;
+  border-left: 2px solid rgba(255, 120, 120, 0.20);
+}
+
+/* Old cards -> list-like */
+.hh-cards{
+  list-style: disc;
+  padding-left: 1.15rem;
+  margin: 0.25rem 0 0;
+  display: block;
+}
+.hh-cards > li{
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Links */
+.hh-subblock a{
+  color: rgba(255, 170, 120, 0.95);
+  text-decoration-color: rgba(255, 120, 60, 0.55);
+}
+.hh-subblock a:hover{
+  color: rgba(255, 210, 170, 1);
+}
+
+/* -----------------------------
+   Inline image hooks
+   ----------------------------- */
+
+.char-img{ margin: 1.05rem 0; }
+
+.char-img img{
+  max-width: 100%;
+  height: auto;
+  display: block;
+
+  border-radius: 14px;
+  border: 1px solid rgba(255, 190, 150, 0.16);
+
+  box-shadow:
+    0 25px 60px rgba(0,0,0,0.65),
+    inset 0 0 0 1px rgba(255, 80, 40, 0.18);
+
+  filter: contrast(1.05) saturate(1.05);
+}
+
+/* intro = centerpiece “full body” */
+.char-img--intro{
+  margin: 1.45rem 0 1.15rem;
+}
+.char-img--intro img{
+  width: min(600px, 100%);
+  margin: 0 auto;
+}
+
+/* left/right wrap */
+.char-img--left,
+.char-img--right{
+  max-width: 44%;
+}
+.char-img--left{
+  float: left;
+  margin: 0.45rem 1.1rem 0.75rem 0;
+}
+.char-img--right{
+  float: right;
+  margin: 0.45rem 0 0.75rem 1.1rem;
+}
+
+/* center */
+.char-img--center img{
+  width: min(760px, 100%);
+  margin: 0 auto;
+}
+
+/* clear floats inside blocks */
+.hh-subblock::after{
+  content:"";
+  display:block;
+  clear: both;
+}
+
+/* -----------------------------
+   details/summary (spoilers / collapsible)
+   ----------------------------- */
+
+details.spoiler,
+details.hh-panel{
+  border-radius: var(--panel-r);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.10);
+  overflow: hidden;
+}
+
+details.spoiler > summary,
+details.hh-panel > summary{
+  padding: 0.95rem 1rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+
+  background: rgba(0,0,0,0.35);
+  border-bottom: 1px solid rgba(255, 140, 100, 0.16);
+
+  font-weight: 800;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(255, 220, 190, 0.95);
+}
+
+details.spoiler > summary::-webkit-details-marker,
+details.hh-panel > summary::-webkit-details-marker{ display:none; }
+
+details.spoiler[open] > summary,
+details.hh-panel[open] > summary{
+  background: rgba(30,0,0,0.45);
+}
+
+/* -----------------------------
+   Floating buttons (FAB)
+   ----------------------------- */
+
+.fab{
+  position: fixed;
+  z-index: 1200;
+
+  padding: 0.48rem 0.98rem;
+  border-radius: 6px; /* not cute */
+  background: rgba(0,0,0,0.65);
+  color: #fff;
+
+  border: 1px solid rgba(255, 140, 100, 0.22);
+  text-decoration: none;
+
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  backdrop-filter: blur(6px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+}
+
+.fab:hover{
+  background: rgba(150, 20, 20, 0.85);
+}
+
+.fab--menu{
+  top: 14px;
+  left: 14px;
+  right: auto;
+  bottom: auto;
+}
+
+.fab--top{
+  right: 1rem;
+  bottom: 1rem;
+}
+
+.fab.is-hidden{
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* -----------------------------
+   Mobile: keep it cheap + readable
+   ----------------------------- */
+@media (max-width: 768px){
+  body::before,
+  body::after{
+    content: none !important;
+    display: none !important;
+  }
+
+  .hh-wrap{
+    max-width: 880px;
+    padding: 0 1rem 5.4rem;
+  }
+
+  .char-img--left,
+  .char-img--right{
+    float: none;
+    max-width: 100%;
+    margin: 0.95rem 0;
+  }
+
+  body{
+    background:
+      radial-gradient(60% 40% at 25% 15%, rgba(255, 60, 60, 0.22), transparent 70%),
+      radial-gradient(55% 45% at 80% 35%, rgba(120, 0, 0, 0.30), transparent 70%),
+      linear-gradient(180deg, #160000, #000000) !important;
+  }
+}

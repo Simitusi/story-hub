@@ -1,172 +1,21 @@
 {
   "schema": 1,
-  "generated_at": "2026-01-25T23:07:33",
+  "generated_at": "2026-02-08T23:06:22",
   "root": "storyhub",
   "new": [
     {
-      "id": "C_ARK_DANIEL",
-      "type": "C",
-      "arc": "characters",
-      "title": "C ARK DANIEL",
-      "slug": "ark-daniel",
-      "source": "source-docx/C_ARK_DANIEL.docx",
-      "proposed_output": "content/characters/ARK_DANIEL.html"
-    },
-    {
-      "id": "C_ARK_LUCAS",
-      "type": "C",
-      "arc": "characters",
-      "title": "C ARK LUCAS",
-      "slug": "ark-lucas",
-      "source": "source-docx/C_ARK_LUCAS.docx",
-      "proposed_output": "content/characters/ARK_LUCAS.html"
-    },
-    {
-      "id": "C_F_BLINK",
-      "type": "C",
-      "arc": "characters",
-      "title": "C F BLINK",
-      "slug": "f-blink",
-      "source": "source-docx/C_F_BLINK.docx",
-      "proposed_output": "content/characters/F_BLINK.html"
-    },
-    {
-      "id": "C_F_FUSE",
-      "type": "C",
-      "arc": "characters",
-      "title": "C F FUSE",
-      "slug": "f-fuse",
-      "source": "source-docx/C_F_FUSE.docx",
-      "proposed_output": "content/characters/F_FUSE.html"
-    },
-    {
-      "id": "C_F_LUMI",
-      "type": "C",
-      "arc": "characters",
-      "title": "C F LUMI",
-      "slug": "f-lumi",
-      "source": "source-docx/C_F_LUMI.docx",
-      "proposed_output": "content/characters/F_LUMI.html"
-    },
-    {
-      "id": "C_F_MAKO",
-      "type": "C",
-      "arc": "characters",
-      "title": "C F MAKO",
-      "slug": "f-mako",
-      "source": "source-docx/C_F_MAKO.docx",
-      "proposed_output": "content/characters/F_MAKO.html"
-    },
-    {
-      "id": "C_F_ROK",
-      "type": "C",
-      "arc": "characters",
-      "title": "C F ROK",
-      "slug": "f-rok",
-      "source": "source-docx/C_F_ROK.docx",
-      "proposed_output": "content/characters/F_ROK.html"
-    },
-    {
-      "id": "C_F_RUST",
-      "type": "C",
-      "arc": "characters",
-      "title": "C F RUST",
-      "slug": "f-rust",
-      "source": "source-docx/C_F_RUST.docx",
-      "proposed_output": "content/characters/F_RUST.html"
-    },
-    {
-      "id": "C_F_SCORCH",
-      "type": "C",
-      "arc": "characters",
-      "title": "C F SCORCH",
-      "slug": "f-scorch",
-      "source": "source-docx/C_F_SCORCH.docx",
-      "proposed_output": "content/characters/F_SCORCH.html"
-    },
-    {
-      "id": "C_F_SKULL",
-      "type": "C",
-      "arc": "characters",
-      "title": "C F SKULL",
-      "slug": "f-skull",
-      "source": "source-docx/C_F_SKULL.docx",
-      "proposed_output": "content/characters/F_SKULL.html"
-    },
-    {
-      "id": "C_F_SPARK",
-      "type": "C",
-      "arc": "characters",
-      "title": "C F SPARK",
-      "slug": "f-spark",
-      "source": "source-docx/C_F_SPARK.docx",
-      "proposed_output": "content/characters/F_SPARK.html"
-    },
-    {
-      "id": "C_F_VERMIN",
-      "type": "C",
-      "arc": "characters",
-      "title": "C F VERMIN",
-      "slug": "f-vermin",
-      "source": "source-docx/C_F_VERMIN.docx",
-      "proposed_output": "content/characters/F_VERMIN.html"
-    },
-    {
-      "id": "C_F_VIPER",
-      "type": "C",
-      "arc": "characters",
-      "title": "C F VIPER",
-      "slug": "f-viper",
-      "source": "source-docx/C_F_VIPER.docx",
-      "proposed_output": "content/characters/F_VIPER.html"
-    },
-    {
-      "id": "C_M_NYX",
-      "type": "C",
-      "arc": "characters",
-      "title": "C M NYX",
-      "slug": "m-nyx",
-      "source": "source-docx/C_M_NYX.docx",
-      "proposed_output": "content/characters/M_NYX.html"
-    },
-    {
-      "id": "C_SR_BLOODHOUND",
-      "type": "C",
-      "arc": "characters",
-      "title": "C SR BLOODHOUND",
-      "slug": "sr-bloodhound",
-      "source": "source-docx/C_SR_BLOODHOUND.docx",
-      "proposed_output": "content/characters/SR_BLOODHOUND.html"
-    },
-    {
-      "id": "C_SR_BO",
-      "type": "C",
-      "arc": "characters",
-      "title": "C SR BO",
-      "slug": "sr-bo",
-      "source": "source-docx/C_SR_BO.docx",
-      "proposed_output": "content/characters/SR_BO.html"
-    },
-    {
-      "id": "C_SR_COLE_THE_BREAKER",
-      "type": "C",
-      "arc": "characters",
-      "title": "C SR COLE THE BREAKER",
-      "slug": "sr-cole-the-breaker",
-      "source": "source-docx/C_SR_COLE_THE_BREAKER.docx",
-      "proposed_output": "content/characters/SR_COLE_THE_BREAKER.html"
-    },
-    {
-      "id": "C_SR_IRONCLAD",
-      "type": "C",
-      "arc": "characters",
-      "title": "C SR IRONCLAD",
-      "slug": "sr-ironclad",
-      "source": "source-docx/C_SR_IRONCLAD.docx",
-      "proposed_output": "content/characters/SR_IRONCLAD.html"
+      "id": "F_00",
+      "type": "F",
+      "arc": "flame",
+      "index": 0,
+      "title": "00 FUSE",
+      "title_text": "FUSE",
+      "slug": "fuse",
+      "source": "source-docx/characters/fiends/FUSE.docx",
+      "proposed_output": "content/flame/00_FUSE.html"
     }
   ],
   "counts": {
-    "new": 18
+    "new": 1
   }
 }

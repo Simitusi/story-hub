@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SKULL</title>
+  <link rel="stylesheet" href="../../../css/fiends.css" />
+</head>
+
+<body>
+  <header class="hh-hero" id="top">
+    <div class="hh-wrap hh-hero-inner">
+      <h1 class="hh-title">SKULL</h1>
+      <div class="hh-meta">
+        <span class="hh-meta-tag">Character</span>
+        <span class="hh-dot" aria-hidden="true"></span>
+        <span class="hh-meta-tag">fiends</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="hh-wrap hh-main" role="main">
+    
+    <section class="hh-panel">
+      <div class="hh-subblock">
+        <p>SKULL (he/him) – Fiends’ assassin, only tie with resurgents, bladesmith</p>
+<ul>
+<li><p>A resurgent, cannibal</p></li>
+<li><p>Around 175cm, tall, lean-ish build. He isn’t exactly bulky, but not skinny either.</p></li>
+<li><p>Stopped counting how old he was, but he seems to be around 35-40</p></li>
+<li><p>Most Fiends keep their distance from him due to his… urges</p></li>
+<li><p>He has a bone collection made of human jaws. He likes hanging his favourite pieces onto his chest.</p></li>
+<li><p>This gives him a signature clicking sound when he moves around, bones rattling against each other. This is especially chilling when he is hunting.</p></li>
+<li><p>He considers himself an assassin, but really, he is predating. Being a resurgent, he has to eat human meat to stay sane.</p></li>
+<li><p>But making his murders a form of art is his own choice.</p></li>
+<li><p>If he wants clean kills, he uses his makeshift scythe. If he needs firepower, he uses a shotgun.</p></li>
+<li><p>He is a very calculated combatant. His preferred choice of combat is cutting off targets, weakening backline, disrupting from inside, isolating.</p></li>
+<li><p>He likes designing his own bladed weapons, but he doesn’t exactly like sharing his profession</p></li>
+<li><p>Doesn’t like company, but he likes drinking with Hellhound, and sometimes with Scorch</p></li>
+<li><p>He has a weird relationship with the other members. He openly hates some (hates Blink the most, calls Mako a rat, and thinks Lumi is too pathetic to be taken seriously, if Hellhound wasn’t there, they would all just be meat to him), but he is also very loyal to the Fiends and he knows that as a resurgent he has it good with them.</p></li>
+</ul>
+
+      </div>
+    </section>
+  </main>
+
+  <a class="fab fab--menu" href="../../../characters.html" title="Back to characters menu">Menu</a>
+  <button class="fab fab--top is-hidden" id="backToTop" type="button" title="Back to top">Top</button>
+
+  <script>
+    (function () {
+      const btn = document.getElementById("backToTop");
+      if (!btn) return;
+
+      function onScroll() {
+        if (window.scrollY > 300) btn.classList.remove("is-hidden");
+        else btn.classList.add("is-hidden");
+      }
+
+      btn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+</body>
+</html>

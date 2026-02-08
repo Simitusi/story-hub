@@ -1,0 +1,265 @@
+/* ═══════════════════════════════════════════════════════════════════
+   PYRE HOUNDS — Editorial Lore
+   Brutalist, restrained, readable
+   ═══════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter+Tight:wght@300;400;500;600;800&display=swap');
+
+/* ──────────────────────────────────────────────────────────────
+   TOKENS
+────────────────────────────────────────────────────────────── */
+
+:root {
+  --void: #000;
+  --surface: #0a0a0a;
+  --surface-2: #111;
+  --surface-3: #1a1a1a;
+
+  --ember: #ff3d00;
+  --ember-dim: #ff6d3a;
+  --ember-glow: rgba(255,61,0,.25);
+
+  --border: rgba(255,255,255,.08);
+  --border-2: rgba(255,255,255,.12);
+  --border-ember: rgba(255,61,0,.4);
+
+  --text: #fff;
+  --text-2: rgba(255,255,255,.85);
+  --text-3: rgba(255,255,255,.6);
+  --text-4: rgba(255,255,255,.4);
+
+  --font-display: 'Inter Tight', system-ui, sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  --sp-2: 8px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+
+  --max-w: 880px;
+  --read-w: 680px;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   BASE
+────────────────────────────────────────────────────────────── */
+
+html, body {
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+.lore-page {
+  min-height: 100svh;
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+/* Background */
+.lore-page::before {
+  content:'';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(1200px at 80% 10%, rgba(255,61,0,.08), transparent 70%),
+    radial-gradient(900px at 20% 50%, rgba(255,109,58,.04), transparent 65%);
+}
+
+.lore-page::after {
+  content:'';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: .03;
+  pointer-events: none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ──────────────────────────────────────────────────────────────
+   LAYOUT
+────────────────────────────────────────────────────────────── */
+
+.lore-wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--sp-6);
+}
+
+.lore-main {
+  padding: var(--sp-10) 0 var(--sp-16);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   HEADER
+────────────────────────────────────────────────────────────── */
+
+.lore-hero {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(18px);
+  background: linear-gradient(
+    to bottom,
+    rgba(10,10,10,.95),
+    rgba(10,10,10,.6),
+    transparent
+  );
+  border-bottom: 1px solid var(--border);
+}
+
+.lore-hero-inner {
+  padding: var(--sp-6) 0 var(--sp-4);
+}
+
+.lore-kicker {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--text-4);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lore-kicker::before {
+  content:'';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ember);
+  box-shadow: 0 0 10px var(--ember-glow);
+}
+
+.lore-title {
+  margin-top: var(--sp-2);
+  font-size: clamp(36px, 6vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  line-height: .95;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   CONTENT
+────────────────────────────────────────────────────────────── */
+
+.lore-panel {
+  border: 1px solid var(--border);
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,.015),
+    rgba(255,255,255,.005)
+  );
+  box-shadow: 0 20px 60px rgba(0,0,0,.55);
+}
+
+.lore-subblock {
+  max-width: var(--read-w);
+  padding: var(--sp-12) var(--sp-8);
+  color: var(--text-2);
+}
+
+.lore-subblock p {
+  margin: var(--sp-4) 0;
+}
+
+/* Headings */
+.lore-subblock h2 {
+  margin-top: var(--sp-12);
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.lore-subblock h3 {
+  margin-top: var(--sp-6);
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* Lists */
+.lore-subblock ul {
+  padding-left: var(--sp-6);
+}
+
+.lore-subblock li::marker {
+  color: var(--ember);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   FAB BUTTONS
+────────────────────────────────────────────────────────────── */
+
+/* Shared base */
+.fab {
+  position: fixed;
+  right: 20px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  text-decoration: none;
+  border: 1px solid var(--border-2);
+  backdrop-filter: blur(16px);
+  transition: transform .2s ease, opacity .2s ease, border-color .2s ease;
+}
+
+/* Menu = primary */
+.fab--menu {
+  bottom: 20px;
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+}
+
+.fab--menu:hover {
+  border-color: var(--border-ember);
+}
+
+/* Back to top = utility */
+.fab--top {
+  bottom: 64px;
+  background: transparent;
+  color: var(--text-3);
+}
+
+.fab--top::after {
+  content: '↑';
+  margin-left: 6px;
+}
+
+.fab--top:hover {
+  color: var(--text);
+}
+
+/* Hidden state */
+.fab--top.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   RESPONSIVE
+────────────────────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .lore-subblock {
+    padding: var(--sp-8) var(--sp-4);
+  }
+
+  .fab {
+    right: 12px;
+  }
+}

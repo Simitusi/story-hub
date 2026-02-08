@@ -1,0 +1,56 @@
+{
+  "schema": 2,
+  "generated_at": "2026-02-04 03:08:55",
+  "arcs": {
+    "flame": [
+      {
+        "id": "F_01",
+        "output": "content/flame/01_THRESHOLD.html",
+        "title": "01 THRESHOLD",
+        "index": 1,
+        "counts": {
+          "images_used": 1,
+          "images_missing": 0
+        },
+        "type": "F"
+      },
+      {
+        "id": "F_02",
+        "output": "content/flame/02_DROUGHTBREAK.html",
+        "title": "02 DROUGHTBREAK",
+        "index": 2,
+        "counts": {
+          "images_used": 0,
+          "images_missing": 0
+        },
+        "type": "F"
+      }
+    ],
+    "order": [
+      {
+        "id": "O_01",
+        "output": "content/order/01_ROUTINE.html",
+        "title": "01 ROUTINE",
+        "index": 1,
+        "counts": {
+          "images_used": 0,
+          "images_missing": 0
+        },
+        "type": "O"
+      },
+      {
+        "id": "O_02",
+        "output": "content/order/02_ECHO.html",
+        "title": "02 ECHO",
+        "index": 2,
+        "counts": {
+          "images_used": 0,
+          "images_missing": 0
+        },
+        "type": "O"
+      }
+    ],
+    "characters": [],
+    "lore": []
+  }
+}

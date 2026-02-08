@@ -1,0 +1,31 @@
+CHARACTERS build log — 2026-02-08T23:06:26
+ROOT: C:\storyhub
+SOURCE_CHAR_DIR: C:\storyhub\source-docx\characters
+OUT_CHAR_DIR: C:\storyhub\content\characters
+
+[FAIL] C:\storyhub\source-docx\characters\ark\DANIEL.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C:\storyhub\source-docx\characters\ark\LUCAS.docx: couldn't unpack docx container: not enough bytes
+[OK] C:\storyhub\source-docx\characters\fiends\BLINK.docx -> C:\storyhub\content\characters\fiends\blink.html
+[FAIL] C:\storyhub\source-docx\characters\fiends\FUSE.docx: couldn't unpack docx container: not enough bytes
+[OK] C:\storyhub\source-docx\characters\fiends\LUCY_HELLHOUND.docx -> C:\storyhub\content\characters\fiends\lucy-hellhound.html
+[FAIL] C:\storyhub\source-docx\characters\fiends\LUMI.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C:\storyhub\source-docx\characters\fiends\MAKO.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C:\storyhub\source-docx\characters\fiends\ROK.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C:\storyhub\source-docx\characters\fiends\RUST.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C:\storyhub\source-docx\characters\fiends\SCORCH.docx: couldn't unpack docx container: not enough bytes
+[OK] C:\storyhub\source-docx\characters\fiends\SKULL.docx -> C:\storyhub\content\characters\fiends\skull.html
+[FAIL] C:\storyhub\source-docx\characters\fiends\SPARK.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C:\storyhub\source-docx\characters\fiends\SPOON.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C:\storyhub\source-docx\characters\fiends\VERMIN.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C:\storyhub\source-docx\characters\fiends\VIPER.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C:\storyhub\source-docx\characters\marauders\C_M_NYX.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C:\storyhub\source-docx\characters\steelrats\C_SR_BLOODHOUND.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C:\storyhub\source-docx\characters\steelrats\C_SR_BO.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C:\storyhub\source-docx\characters\steelrats\C_SR_COLE_THE_BREAKER.docx: couldn't unpack docx container: not enough bytes
+[FAIL] C:\storyhub\source-docx\characters\steelrats\C_SR_IRONCLAD.docx: couldn't unpack docx container: not enough bytes
+
+=== Summary ===
+Converted: 3
+Failed:    17
+Skipped:   0
+Manifest:  C:\storyhub\manifest.json

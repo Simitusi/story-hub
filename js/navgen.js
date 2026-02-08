@@ -77,64 +77,212 @@
     return entries;
   }
 
+  function humanizeSegment(seg) {
+    // folder/file stem -> nicer label
+    const s = safeText(seg)
+      .replace(/\.html$/i, "")
+      .replace(/[_-]+/g, " ")
+      .trim();
+    if (!s) return "";
+    // light title case (keeps ALLCAPS readable enough)
+    return s
+      .split(" ")
+      .filter(Boolean)
+      .map(w => w.length <= 2 ? w.toUpperCase() : (w[0].toUpperCase() + w.slice(1).toLowerCase()))
+      .join(" ");
+  }
+
+  function stripArcFromOutput(output, arc) {
+    // "content/lore/ecology/fauna/X.html" -> "ecology/fauna/X.html"
+    const out = normalizePath(output);
+    const prefix = `content/${arc}/`;
+    if (out.startsWith(prefix)) return out.slice(prefix.length);
+    return out; // fallback
+  }
+
+  function leafTitleFromEntry(entry) {
+    // Prefer entry.title but only show the final segment if it's a path-like title ("L a / b / c")
+    const raw = safeText(entry.title || entry.title_text || entry.id || "");
+    const cleaned = raw.replace(/^[CL]\s+/i, "").trim();
+
+    // If it looks like our builder title format: "something / something / leaf"
+    if (cleaned.includes(" / ")) {
+      const parts = cleaned.split(" / ").map(p => p.trim()).filter(Boolean);
+      if (parts.length) return parts[parts.length - 1];
+    }
+
+    // Fallback: use filename stem from output
+    const out = normalizePath(entry.output);
+    const name = out.split("/").pop() || out;
+    return name.replace(/\.html$/i, "");
+  }
+
+  function makeRow(entry, options, currentPath) {
+    const output = normalizePath(entry.output);
+    const href = output;
+
+    const row = el("a", "chapter-row");
+    row.href = href;
+
+    // Active highlight: match by suffix so it still works under /<repo>/... on GitHub Pages
+    if (output && currentPath.endsWith(output)) {
+      row.classList.add("active");
+      row.setAttribute("aria-current", "page");
+    }
+
+    const left = el("div", "chapter-left");
+    const titleText = humanizeSegment(leafTitleFromEntry(entry));
+    const title = el("div", "chapter-title", safeText(titleText || entry.title || entry.title_text || entry.id || href));
+    left.appendChild(title);
+
+    const metaBits = [];
+    if (entry.id) metaBits.push(entry.id);
+
+    if (metaBits.length) {
+      const meta = el("div", "chapter-meta", metaBits.join(" · "));
+      left.appendChild(meta);
+    }
+
+    const right = el("div", "chapter-right");
+
+    const counts = entry.counts || {};
+    const missingCount = Number(counts.images_missing || 0);
+
+    if (options.showCounts && entry.counts && typeof counts.images_used === "number") {
+      right.appendChild(makeBadge(`${counts.images_used} img`, "badge badge-img"));
+    }
+
+    if (options.showMissingBadge && missingCount > 0) {
+      right.appendChild(makeBadge(`${missingCount} missing`, "badge badge-missing"));
+    }
+
+    row.appendChild(left);
+    row.appendChild(right);
+
+    return row;
+  }
+
   function renderList(mountEl, arc, entries, options) {
     const list = el("div", "chapter-list");
-
     const currentPath = getCurrentPathnameNormalized();
 
     for (const entry of entries) {
-      const output = normalizePath(entry.output);
-      const href = output; // output is already a web path like "content/flame/01_X.html"
-
-      const row = el("a", "chapter-row");
-      row.href = href;
-
-      // Active highlight: match by suffix so it still works under /<repo>/... on GitHub Pages
-      // Example current: "/STORYHUB/content/flame/01_THRESHOLD.html"
-      // output: "content/flame/01_THRESHOLD.html"
-      if (output && currentPath.endsWith(output)) {
-        row.classList.add("active");
-        row.setAttribute("aria-current", "page");
-      }
-
-      const left = el("div", "chapter-left");
-      const title = el("div", "chapter-title", safeText(entry.title || entry.title_text || entry.id || href));
-      left.appendChild(title);
-
-      // Optional subtitle line (source or id). Keep it minimal.
-      const metaBits = [];
-      if (entry.id) metaBits.push(entry.id);
-      if (typeof entry.index === "number" && entry.index > 0 && (entry.type === "F" || entry.type === "O")) {
-        // index is already in title usually, but id+index can help debugging
-        // no need to repeat if you hate it; it’s subtle.
-      }
-
-      if (metaBits.length) {
-        const meta = el("div", "chapter-meta", metaBits.join(" · "));
-        left.appendChild(meta);
-      }
-
-      const right = el("div", "chapter-right");
-
-      // Counts / missing badges (optional)
-      const counts = entry.counts || {};
-      const missingCount = Number(counts.images_missing || 0);
-
-      if (options.showCounts && entry.counts && typeof counts.images_used === "number") {
-        right.appendChild(makeBadge(`${counts.images_used} img`, "badge badge-img"));
-      }
-
-      if (options.showMissingBadge && missingCount > 0) {
-        right.appendChild(makeBadge(`${missingCount} missing`, "badge badge-missing"));
-      }
-
-      row.appendChild(left);
-      row.appendChild(right);
-
-      list.appendChild(row);
+      list.appendChild(makeRow(entry, options, currentPath));
     }
 
     mountEl.appendChild(list);
+  }
+
+  // -------------------------
+  // Tree nav for lore/characters
+  // -------------------------
+
+  function buildTree(entries, arc) {
+    // Node shape:
+    // { folders: Map<string, node>, pages: entry[] }
+    const root = { folders: new Map(), pages: [] };
+
+    for (const entry of entries) {
+      const rel = stripArcFromOutput(entry.output, arc);
+      const parts = normalizePath(rel).split("/").filter(Boolean);
+
+      // If output is weird, just dump it at root
+      if (parts.length === 0) {
+        root.pages.push(entry);
+        continue;
+      }
+
+      const file = parts.pop(); // last is filename
+      const folderParts = parts;
+
+      let node = root;
+      for (const folder of folderParts) {
+        if (!node.folders.has(folder)) {
+          node.folders.set(folder, { folders: new Map(), pages: [] });
+        }
+        node = node.folders.get(folder);
+      }
+
+      // Keep the entry; filename isn't needed because entry.output is already the link
+      node.pages.push(entry);
+    }
+
+    return root;
+  }
+
+  function sortNode(node) {
+    // Sort pages by title-ish
+    node.pages.sort((a, b) => {
+      const at = humanizeSegment(leafTitleFromEntry(a)).toLowerCase();
+      const bt = humanizeSegment(leafTitleFromEntry(b)).toLowerCase();
+      return at.localeCompare(bt);
+    });
+
+    // Sort folders by key
+    const folderKeys = Array.from(node.folders.keys()).sort((a, b) => {
+      return humanizeSegment(a).toLowerCase().localeCompare(humanizeSegment(b).toLowerCase());
+    });
+
+    // Rebuild map in sorted order
+    const newMap = new Map();
+    for (const k of folderKeys) {
+      const child = node.folders.get(k);
+      sortNode(child);
+      newMap.set(k, child);
+    }
+    node.folders = newMap;
+  }
+
+  function renderTree(mountEl, arc, tree, options) {
+    const wrap = el("div", "nav-tree");
+    const currentPath = getCurrentPathnameNormalized();
+
+    function renderNode(node, label, depth) {
+      // Use <details> for collapsible groups; open top-level by default
+      const details = document.createElement("details");
+      details.className = "nav-group";
+      if (depth <= 0) details.open = true;
+
+      const summary = document.createElement("summary");
+      summary.className = "nav-group-title";
+      summary.textContent = humanizeSegment(label);
+      details.appendChild(summary);
+
+      const body = el("div", "nav-group-body");
+
+      // Pages first
+      if (node.pages.length) {
+        const list = el("div", "chapter-list");
+        for (const entry of node.pages) {
+          list.appendChild(makeRow(entry, options, currentPath));
+        }
+        body.appendChild(list);
+      }
+
+      // Then folders
+      for (const [folderName, child] of node.folders.entries()) {
+        body.appendChild(renderNode(child, folderName, depth + 1));
+      }
+
+      details.appendChild(body);
+      return details;
+    }
+
+    // Root pages (rare, but supported)
+    if (tree.pages.length) {
+      const rootList = el("div", "chapter-list");
+      for (const entry of tree.pages) {
+        rootList.appendChild(makeRow(entry, options, currentPath));
+      }
+      wrap.appendChild(rootList);
+    }
+
+    // Top folders
+    for (const [folderName, child] of tree.folders.entries()) {
+      wrap.appendChild(renderNode(child, folderName, 0));
+    }
+
+    mountEl.appendChild(wrap);
   }
 
   async function buildNav(arc, mountId, opts) {
@@ -167,21 +315,28 @@
       }
 
       // Builder already sorts deterministically; we still sort defensively for sanity.
-     const sorted = entries.slice().sort((a, b) => {
-  const ai = typeof a.index === "number" ? a.index : null;
-  const bi = typeof b.index === "number" ? b.index : null;
+      const sorted = entries.slice().sort((a, b) => {
+        const ai = typeof a.index === "number" ? a.index : null;
+        const bi = typeof b.index === "number" ? b.index : null;
 
-  // If both have numeric index, sort by that (F/O chapters)
-  if (ai !== null && bi !== null) return ai - bi;
+        // If both have numeric index, sort by that (F/O chapters)
+        if (ai !== null && bi !== null) return ai - bi;
 
-  // Otherwise sort by title (Characters/Lore)
-  const at = String(a.title || a.title_text || a.id || "").toLowerCase();
-  const bt = String(b.title || b.title_text || b.id || "").toLowerCase();
-  return at.localeCompare(bt);
-});
+        // Otherwise sort by title (Characters/Lore)
+        const at = String(a.title || a.title_text || a.id || "").toLowerCase();
+        const bt = String(b.title || b.title_text || b.id || "").toLowerCase();
+        return at.localeCompare(bt);
+      });
 
-
-      renderList(mountEl, arc, sorted, options);
+      // Lore/Characters: category tree from output paths
+      if (arc === "lore" || arc === "characters") {
+        const tree = buildTree(sorted, arc);
+        sortNode(tree);
+        renderTree(mountEl, arc, tree, options);
+      } else {
+        // Flame/Order: classic flat list
+        renderList(mountEl, arc, sorted, options);
+      }
     } catch (err) {
       clearEl(mountEl);
       const msg = err && err.message ? err.message : String(err);

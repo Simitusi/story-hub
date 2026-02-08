@@ -1,0 +1,19 @@
+LORE build log — 2026-02-08T23:06:30
+ROOT: C:\storyhub
+SOURCE_LORE_DIR: C:\storyhub\source-docx\lore
+OUT_LORE_DIR: C:\storyhub\content\lore
+
+[OK] C:\storyhub\source-docx\lore\ecology_and_biology\fauna\DRIFTBEASTS.docx -> C:\storyhub\content\lore\ecology_and_biology\fauna\driftbeasts.html
+[OK] C:\storyhub\source-docx\lore\ecology_and_biology\fauna\IRON_GRAZERS.docx -> C:\storyhub\content\lore\ecology_and_biology\fauna\iron-grazers.html
+[OK] C:\storyhub\source-docx\lore\ecology_and_biology\fauna\MERCY_BEASTS.docx -> C:\storyhub\content\lore\ecology_and_biology\fauna\mercy-beasts.html
+[OK] C:\storyhub\source-docx\lore\ecology_and_biology\fauna\PYRE_HOUNDS.docx -> C:\storyhub\content\lore\ecology_and_biology\fauna\pyre-hounds.html
+[OK] C:\storyhub\source-docx\lore\ecology_and_biology\fauna\SIGNAL_EATERS.docx -> C:\storyhub\content\lore\ecology_and_biology\fauna\signal-eaters.html
+[OK] C:\storyhub\source-docx\lore\ecology_and_biology\fauna\SKARNS.docx -> C:\storyhub\content\lore\ecology_and_biology\fauna\skarns.html
+[OK] C:\storyhub\source-docx\lore\terms_and_labels\Glossary.docx -> C:\storyhub\content\lore\terms_and_labels\glossary.html
+[INFO] No terms mega-doc found. Looked for lore/terms.docx or lore/terms/terms.docx
+
+=== Summary ===
+Converted: 7
+Failed:    0
+Skipped:   0
+Manifest:  C:\storyhub\manifest.json

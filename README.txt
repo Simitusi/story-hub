@@ -1,157 +1,251 @@
-This document describes builder contracts, not usage tips.
+# Chapter Builder (`build_chapters.py`)
 
+This script builds **story chapters** from DOCX files.
 
-# STORYHUB BUILDER — HARD RULES & CONTRACTS
+It converts chapter DOCX files under `source-docx/` into fully styled HTML pages under `content/flame/` and `content/order/`, injects images, builds per-chapter galleries, generates a global media gallery, and updates the **chapter arcs** in `manifest.json`.
 
-This document lists **all standardized rules** enforced by the converter/builder.
-Anything listed as *hard-coded* must NOT be changed unless the builder is modified.
-
----
-
-## 1. DOCX SOURCE FILE RULES
-
-### 1.1 Allowed prefixes (HARD-CODED)
-
-Only these initials are recognized:
-
-* `F_` → Flame chapters (full automation)
-* `O_` → Order chapters (full automation)
-* `C_` → Characters (Pandoc-only conversion)
-* `L_` → Lore (Pandoc-only conversion)
-
-Any other prefix → file is skipped.
+This is the loud, cinematic builder. It does the most work and touches the most moving parts. Respect it.
 
 ---
 
-### 1.2 DOCX filename format (HARD-CODED)
+## What this builder does
 
-#### Chapters (F / O):
+### ✅ Builds story chapters
 
-```
-F_01_TITLE.docx
-O_03_SOMETHING.docx
-```
+* One DOCX → one HTML page
+* Supports Flame and Order arcs
+* Injects inline illustrations
+* Generates a per-chapter gallery
+* Adds lightbox navigation
+* Applies arc-specific CSS
 
-Rules:
+### ✅ Builds a global media gallery
 
-* Initial is **UPPERCASE**
-* Chapter number is **two digits**
-* Title uses underscores instead of spaces
-* File extension must be `.docx`
+* Lists **every image** in `/media`
+* Lightbox-enabled
+* Generated on every build
 
-#### Characters / Lore (C / L):
-
-```
-C_LUCY.docx
-L_ARK_HISTORY.docx
-```
-
-No chapter numbers required.
-
----
-
-### 1.3 DOCX location (HARD-CODED)
-
-All source files must be inside:
-
-```
-/source-docx/
-```
-
----
-
-## 2. OUTPUT STRUCTURE RULES
-
-### 2.1 Chapter output paths (HARD-CODED)
-
-* Flame chapters → `content/flame/`
-* Order chapters → `content/order/`
-
-Filename format:
-
-```
-01_TITLE.html
-```
-
----
-
-### 2.2 Character & Lore output (HARD-CODED)
-
-Characters and Lore are converted with **Pandoc only**, no automation.
-
-* Characters → `content/characters/`
-* Lore → `content/lore/`
-
-These files are meant to be **manually edited afterward**.
-
----
-
-### 2.3 Manifest file (HARD-CODED)
-
-* Path:
-
-  ```
-  /manifest.json
-  ```
-* Overwritten every build
-* Used by navigation JS
-* Do NOT edit manually
-
-# `manifest.json` — Build Output Specification
-
-`manifest.json` is generated **on every build** by `converter.py`.
-It is the **single source of truth** for navigation, chapter listing, and metadata.
-
-This file is **fully generated**.
-Do **not** edit it manually.
-
----
-
-## General Structure
+### ✅ Updates:
 
 ```json
-{
-  "schema": 2,
-  "generated_at": "YYYY-MM-DDTHH:MM:SS",
-  "root": "STORYHUB",
-  "arcs": {
-    "flame": [],
-    "order": [],
-    "characters": [],
-    "lore": []
-  }
-}
+manifest.arcs.flame
+manifest.arcs.order
 ```
 
-### Top-level fields
+---
 
-| Field          | Type   | Description                                                  |
-| -------------- | ------ | ------------------------------------------------------------ |
-| `schema`       | number | Manifest schema version. Incremented when structure changes. |
-| `generated_at` | string | ISO timestamp of build time.                                 |
-| `root`         | string | Name of the project root directory.                          |
-| `arcs`         | object | Grouped chapter entries by category.                         |
+## What this builder does NOT do
+
+* ❌ Does not touch characters
+* ❌ Does not touch lore
+* ❌ Does not modify character or lore pages
+* ❌ Does not overwrite CSS
+* ❌ Does not assume anything about folders under `characters/` or `lore/`
+
+It is arc-aware, not globally destructive.
 
 ---
 
-## Arcs
+## Chapter DOCX discovery rules
 
-The `arcs` object groups all generated content by logical section:
+The builder scans **all DOCX files** under:
 
-| Arc          | Description                    |
-| ------------ | ------------------------------ |
-| `flame`      | Flame chapters (`F_XX_*.docx`) |
-| `order`      | Order chapters (`O_XX_*.docx`) |
-| `characters` | Character pages (`C_*.docx`)   |
-| `lore`       | Lore pages (`L_*.docx`)        |
+```
+source-docx/
+```
 
-Each arc contains an **array of entries**, already sorted deterministically by the builder.
+But it only builds files whose **filename starts with**:
+
+* `F_` → Flame arc
+* `O_` → Order arc
+
+Everything else is skipped.
+
+This is intentional. Chapters are discovered by **prefix**, not folder.
 
 ---
 
-## Flame / Order Chapter Entry
+## Chapter filename format (mandatory)
 
-Entries inside `arcs.flame` and `arcs.order` follow this structure:
+```
+F_01_THRESHOLD.docx
+O_07_FALLING_APART.docx
+```
+
+Meaning:
+
+* `F` / `O` = arc
+* `01` = chapter number (used for sorting)
+* `THRESHOLD` = chapter title
+
+If you break this format, the builder will still try, but the results will look wrong and that will be on you.
+
+---
+
+## Output structure
+
+### Flame chapters
+
+```
+content/
+  flame/
+    01_THRESHOLD.html
+    02_SOMETHING.html
+```
+
+### Order chapters
+
+```
+content/
+  order/
+    01_BEGINNING.html
+```
+
+Arc determines:
+
+* output folder
+* CSS file
+* cover image
+
+---
+
+## DOCX formatting rules (important)
+
+Pandoc does not care about your feelings.
+
+### Use these Word styles
+
+* **Normal text** – story paragraphs
+* **Heading 2 / 3** – optional internal section breaks
+* Proper lists when needed
+
+### Do NOT use
+
+* Heading 1 for the chapter title (title comes from filename)
+* Text boxes
+* Columns
+* WordArt
+* Manual spacing hacks
+
+Story flow comes from text, not layout tricks.
+
+---
+
+## Image hooks (chapter-specific)
+
+Chapters use **indexed image hooks**:
+
+```
+@@IMG:key@@
+@@IMG:key|caption@@
+```
+
+Resolution rule:
+
+```
+<ARC>_<CHAPTER>_<key>.<ext>
+```
+
+Example:
+
+```
+F_01_blink_kiss.webp
+O_07_firestorm.png
+```
+
+Images live in:
+
+```
+/media/
+```
+
+---
+
+## Inline illustrations
+
+Each image hook becomes:
+
+* an inline `<figure>`
+* styled by CSS
+* included automatically in the chapter gallery
+
+Missing images:
+
+* render as visible warnings in the chapter
+* are listed in the gallery “Missing images” panel
+* are logged during build
+
+---
+
+## Per-chapter gallery
+
+Every chapter page includes:
+
+* A **toggleable gallery section**
+* Thumbnails of all images used in that chapter
+* Missing image warnings
+* Lightbox navigation (prev / next / close)
+
+This is automatic. You don’t opt in.
+
+---
+
+## Global media gallery
+
+The builder also generates:
+
+```
+gallery.html
+```
+
+Features:
+
+* Lists every image in `/media`
+* Sorted alphabetically
+* Lightbox-enabled
+* Independent of chapters
+
+This page is regenerated on every build.
+
+---
+
+## Covers
+
+Each arc has a fixed cover image:
+
+* Flame: `media/hellfirefiends.webp`
+* Order: `media/ark.webp`
+
+If missing:
+
+* a visible placeholder is rendered instead
+
+Covers are injected automatically.
+
+---
+
+## CSS behavior
+
+Chapter pages always link:
+
+```
+css/base.css
+css/flame.css   (Flame arc)
+css/order.css   (Order arc)
+```
+
+The builder:
+
+* assumes these exist
+* never creates or overwrites them
+
+Styling is your responsibility.
+
+---
+
+## Manifest entries
+
+Each chapter produces an entry like:
 
 ```json
 {
@@ -160,325 +254,642 @@ Entries inside `arcs.flame` and `arcs.order` follow this structure:
   "arc": "flame",
   "index": 1,
   "title": "01 THRESHOLD",
-  "title_text": "THRESHOLD",
-  "slug": "threshold",
-  "source": "source-docx/F_01_THRESHOLD.docx",
-  "output": "content/flame/01_THRESHOLD.html",
-  "images": [
-    "media/F_01_key.webp"
-  ],
-  "missing_images": [],
-  "counts": {
-    "images_used": 1,
-    "images_missing": 0
-  }
+  "output": "content/flame/01_THRESHOLD.html"
 }
 ```
 
-### Field reference
+Entries are:
 
-| Field                   | Type   | Meaning                                      |
-| ----------------------- | ------ | -------------------------------------------- |
-| `id`                    | string | Stable chapter identifier (`F_01`, `O_03`).  |
-| `type`                  | string | `"F"` or `"O"`.                              |
-| `arc`                   | string | `"flame"` or `"order"`.                      |
-| `index`                 | number | Numeric chapter index used for ordering.     |
-| `title`                 | string | Display title including index.               |
-| `title_text`            | string | Title without index.                         |
-| `slug`                  | string | Lowercase, URL-safe slug derived from title. |
-| `source`                | string | Path to the originating `.docx` file.        |
-| `output`                | string | Path to the generated HTML file.             |
-| `images`                | array  | List of image files successfully injected.   |
-| `missing_images`        | array  | Image stems referenced but not found.        |
-| `counts.images_used`    | number | Number of images injected.                   |
-| `counts.images_missing` | number | Number of missing images.                    |
+* rebuilt every run
+* sorted by chapter number
+* installed into their respective arc only
 
-### Guarantees
-
-* Entries are **already sorted** by `index`
-* Paths use **forward slashes**
-* Missing images **do not fail the build**
-* `output` paths are safe to use directly as `<a href>`
+Characters and lore remain untouched.
 
 ---
 
-## Characters / Lore Entry
+## Discovery manifest
 
-Entries inside `arcs.characters` and `arcs.lore` are simpler:
+The builder also generates:
+
+```
+manifest.new.json
+```
+
+Purpose:
+
+* lists chapter DOCX files not yet in `manifest.json`
+* helps you discover unregistered chapters
+
+This file is informational. Nothing reads from it automatically.
+
+---
+
+## Running the builder
+
+```bash
+python build_chapters.py
+```
+
+Requirements:
+
+* Python 3.10+
+* Pandoc installed and on PATH
+
+Logs are written to:
+
+```
+log.txt
+```
+
+---
+
+## Design philosophy (read this before “improving” it)
+
+* Chapters are **narrative**, not reference
+* Filenames define identity and order
+* Visual drama is allowed here, nowhere else
+* The builder is allowed to be heavy
+* Side effects are explicit, not hidden
+
+If you want something quieter, cleaner, or more semantic, that’s lore or characters. Chapters are supposed to feel like they’re on fire.
+
+---
+
+## When to use this builder
+
+Use it for:
+
+* Main story chapters
+* Ordered narrative content
+* Anything that belongs in Flame or Order arcs
+
+Do NOT use it for:
+
+* Lore explanations
+* Character profiles
+* Glossaries
+* Notes
+* Experiments
+
+That’s how you keep the project from collapsing into soup.
+
+
+
+
+
+
+
+
+
+
+# Character Builder (`build_characters.py`)
+
+This script builds **character profile pages** from DOCX files.
+
+It converts DOCX files under `source-docx/characters/` into styled HTML pages under `content/characters/`, resolves image hooks, and updates **only** the characters section of `manifest.json`.
+
+It is intentionally strict. Characters are not freeform notes.
+
+---
+
+## What this builder does
+
+### ✅ Builds character pages
+
+* One DOCX → one HTML page
+* Folder structure is preserved
+* Category-specific CSS is auto-created (once)
+* Image hooks are resolved
+* Hellhound-style layout is enforced
+
+### ✅ Updates only:
 
 ```json
-{
-  "id": "C_LUCY",
-  "type": "C",
-  "arc": "characters",
-  "title": "C LUCY",
-  "slug": "lucy",
-  "source": "source-docx/C_LUCY.docx",
-  "output": "content/characters/LUCY.html"
-}
+manifest.arcs.characters
 ```
 
-### Notes
+---
 
-* These files are generated via **Pandoc standalone conversion**
-* No image hook processing is applied
-* Styling is handled manually after generation
+## What this builder does NOT do
+
+* ❌ Does not touch chapters
+* ❌ Does not touch lore
+* ❌ Does not build galleries
+* ❌ Does not reorder flame/order arcs
+* ❌ Does not overwrite CSS
+* ❌ Does not scan outside `source-docx/characters/`
+
+This builder is path-isolated. You cannot accidentally feed it lore or chapters unless you physically move files.
 
 ---
 
-## Intended Usage
+## Folder structure (required)
 
-* `navgen.js` reads `manifest.json` to build navigation
-* No filesystem scanning is required at runtime
-* Consumers should rely on:
-
-  * `arc` for filtering
-  * `index` for ordering
-  * `output` for linking
-
----
-
-## Stability Rules
-
-* Generated HTML files are **immutable outputs**
-* All structural changes happen **at build time**
-* Runtime JavaScript must treat the manifest as read-only data
-* If the schema changes, `schema` will increment
-
----
-
-## Do Not
-
-* Manually edit `manifest.json`
-* Derive metadata by parsing filenames
-* Assume filesystem order equals chapter order
-* Store state in generated HTML
-
----
-
-### 2.4 Log file (HARD-CODED)
-
-* Path:
-
-  ```
-  /log.txt
-  ```
-* Overwritten every run
-* Contains:
-
-  * timestamps
-  * converted files
-  * missing images
-  * Pandoc errors
-  * summary
-
----
-
-## 3. IMAGE SYSTEM RULES
-
-### 3.1 Media folder (HARD-CODED)
-
-All images must be placed in:
+### Source
 
 ```
-/media/
+source-docx/
+  characters/
+    fiends/
+      Lucy Moore.docx
+      Blink.docx
+    marauders/
+      Nyx.docx
 ```
 
-No subfolders. Flat structure.
+### Output
+
+```
+content/
+  characters/
+    fiends/
+      lucy-moore.html
+      blink.html
+    marauders/
+      nyx.html
+```
+
+* First folder under `characters/` = **category**
+* Folder structure is mirrored exactly in output
+* File name = character display title
+
+No prefixes. Folder structure is law.
 
 ---
 
-### 3.2 Image filename format (HARD-CODED)
+## Category CSS behavior (important)
 
-For chapter illustrations:
+For each category folder, the builder ensures:
 
 ```
-F_01_key.webp
-O_03_key.png
+css/<category>.css
 ```
 
-Rules:
+Example:
 
-* Initial matches DOCX (`F` or `O`)
-* Chapter number matches DOCX
-* `key` matches image hook key exactly
-* Case sensitive on GitHub (use uppercase consistently)
+```
+css/fiends.css
+css/marauders.css
+```
+
+If the file does not exist:
+
+* It is created **once**
+* Contains a comment stub
+* Is never overwritten
+
+You are expected to:
+
+```css
+@import url("./base.css");
+/* then theme it */
+```
+
+Each character page links **only** its category CSS.
 
 ---
 
-### 3.3 Allowed image formats (HARD-CODED, priority order)
+## DOCX formatting rules
 
-1. `.webp`
-2. `.png`
-3. `.jpg`
-4. `.jpeg`
-5. `.gif`
+Pandoc is literal. Follow these rules.
 
-First match wins.
+### Use these Word styles
+
+* **Heading 1** – optional character name
+* **Heading 2** – major sections (Overview, Personality, Combat, etc.)
+* **Heading 3** – subsections
+* Normal paragraphs
+* Proper lists
+
+### Do NOT use
+
+* Text boxes
+* Columns
+* WordArt
+* Manual spacing for layout
+* Inline pasted images
+
+Characters are content, not layout experiments.
 
 ---
 
-## 4. IMAGE HOOK SYNTAX (HARD-CODED)
+## Image hooks
 
-### 4.1 Valid hook formats
-
-#### No caption:
+Supported syntax:
 
 ```
 @@IMG:key@@
+@@IMG:key|left@@
+@@IMG:key|right@@
+@@IMG:key|center@@
+@@IMG:key|intro@@
 ```
 
-#### With caption:
+Images are resolved from:
 
 ```
-@@IMG:key|Caption text here@@
+/media/<key>.(webp|png|jpg|jpeg|gif)
+```
+
+Resolution is:
+
+* case-insensitive
+* extension-priority based
+
+Missing images:
+
+* are shown inline as warnings
+* are listed in a “Missing images” panel at the top
+* are logged during build
+
+---
+
+## HTML structure (guaranteed)
+
+Every character page uses the same skeleton:
+
+* Hero header with name + category
+* Metadata tags
+* Content panel
+* Floating menu button
+* Back-to-top button
+
+This is intentional. Characters must feel consistent.
+
+If you want wildly different layouts, that’s lore or chapters, not characters.
+
+---
+
+## Ignored files
+
+Anything starting with `_` is ignored.
+
+Examples:
+
+```
+source-docx/characters/_drafts/
+source-docx/characters/fiends/_Lucy_notes.docx
+```
+
+These will never be built.
+
+---
+
+## Manifest entries
+
+Each character produces an entry like:
+
+```json
+{
+  "type": "C",
+  "arc": "characters",
+  "category": "fiends",
+  "title": "Lucy Moore",
+  "slug": "lucy-moore",
+  "output": "content/characters/fiends/lucy-moore.html"
+}
+```
+
+Entries are sorted by:
+
+* category
+* title (alphabetical)
+
+Only `manifest.arcs.characters` is replaced.
+
+---
+
+## Running the builder
+
+```bash
+python build_characters.py
+```
+
+Requirements:
+
+* Python 3.10+
+* Pandoc installed and on PATH
+
+Logs are written to:
+
+```
+characters_build_log.txt
+```
+
+---
+
+## Design philosophy (do not fight this)
+
+* Characters are **entities**, not essays
+* Consistency > creativity at the page level
+* Categories control theme, not filenames
+* Builders should be deterministic and boring
+* Styling belongs in CSS, not DOCX
+
+If you find yourself wanting to “just tweak one character’s layout”, you’re probably about to break consistency for no good reason.
+
+---
+
+## When to use this builder
+
+Use it for:
+
+* Named characters
+* Factions leaders
+* Recurring NPCs
+* Robots, creatures, or entities treated as “characters”
+
+Do NOT use it for:
+
+* Lore explanations
+* Systems
+* Timelines
+* Glossaries
+* Chapters
+
+That’s what the other builders are for.
+
+
+
+
+
+
+
+
+
+# Lore Builder (`build_lore.py`)
+
+This script builds **lore pages** and the **Terms & Labels glossary** for the project.
+
+It converts DOCX files under `source-docx/lore/` into static HTML pages under `content/lore/`, updates the lore section of `manifest.json`, and does **nothing else**.
+
+If you’re worried it might touch chapters or characters: it won’t. Ever.
+
+---
+
+## What this builder does
+
+### ✅ Builds standard lore pages
+
+* One DOCX → one HTML page
+* Folder structure is preserved
+* Image hooks are resolved
+* Clean, documentation-style layout
+
+### ✅ Builds the Terms & Labels mega-page
+
+* One growing DOCX → one searchable HTML glossary
+* Terms are alphabetized automatically
+* Built-in client-side search
+* Deep links for every term
+* A–Z jump navigation
+
+### ✅ Updates only:
+
+```json
+manifest.arcs.lore
+```
+
+---
+
+## What this builder does NOT do
+
+* ❌ Does not touch chapters
+* ❌ Does not touch characters
+* ❌ Does not touch galleries
+* ❌ Does not modify flame/order content
+* ❌ Does not overwrite CSS files
+* ❌ Does not assume prefixes exist
+
+This builder is sandboxed by path. Folder law is absolute.
+
+---
+
+## Folder structure (required)
+
+### Source
+
+```
+source-docx/
+  lore/
+    eden/
+      Project Eden.docx
+    wasteland/
+      Aberration.docx
+    economy/
+      Economy.docx
+```
+
+### Output
+
+```
+content/
+  lore/
+    eden/
+      project-eden.html
+    wasteland/
+      aberration.html
+    economy/
+      economy.html
+```
+
+Folder names define **categories**.
+File names define **page titles**.
+
+No prefixes. No numbering. No arc logic.
+
+---
+
+## Ignored files and folders
+
+Anything starting with `_` is ignored.
+
+Examples:
+
+```
+source-docx/lore/_drafts/
+source-docx/lore/_notes.docx
+```
+
+These will never be built.
+
+---
+
+## DOCX formatting rules (important)
+
+Pandoc is literal. Follow these or accept chaos.
+
+### Use these Word styles
+
+* **Heading 1** – optional page title
+* **Heading 2** – main sections
+* **Heading 3** – subsections
+* Normal paragraphs
+* Proper bullet / numbered lists
+
+### Do NOT use
+
+* Text boxes
+* Columns
+* Manual spacing as layout
+* WordArt
+* Inline pasted images (use image hooks)
+
+---
+
+## Image hooks
+
+Supported everywhere in lore:
+
+```
+@@IMG:key@@
+@@IMG:key|left@@
+@@IMG:key|right@@
+@@IMG:key|center@@
+@@IMG:key|intro@@
+```
+
+Images are resolved from:
+
+```
+/media/<key>.(webp|png|jpg|jpeg|gif)
+```
+
+Missing images are reported visibly in the output page and logged.
+
+---
+
+## Terms & Labels (Glossary)
+
+The glossary is a **single DOCX file** that grows forever.
+
+### Accepted locations
+
+```
+source-docx/lore/terms.docx
+```
+
+or
+
+```
+source-docx/lore/terms/terms.docx
+```
+
+### DOCX convention (mandatory)
+
+Each term starts with a line beginning with `@`.
+
+Example:
+
+```
+@Aberration
+A non-contagious condition caused by prolonged neurochemical dependency.
+
+@Resurgents
+Aberrants who maintain cognition by consuming human flesh.
 ```
 
 Rules:
 
-* No spaces inside `@@IMG: ... @@`
-* `key` may contain only:
-
-  * letters
-  * numbers
-  * underscores
-* Caption is optional and may contain spaces
+* `@Term` must be on its own line
+* Everything until the next `@` belongs to that term
+* Order in DOCX does not matter
 
 ---
 
-### 4.2 Hook placement rules (REQUIRED)
+## Glossary HTML features
 
-* Hook **must be on its own line**
-* Use **Normal** paragraph style
-* No bold, italics, font changes, or formatting
-* Do not embed hooks inline with text
-
-Correct:
+The generated page:
 
 ```
-@@IMG:blink_kiss@@
+content/lore/terms.html
 ```
 
-Incorrect:
+Includes:
+
+* Alphabetical ordering
+* Client-side search (term name + body)
+* A–Z jump navigation
+* Collapsible entries
+* Deep links (`#aberration`)
+
+Search hides the jump bar automatically to avoid lying to the user.
+
+---
+
+## CSS
+
+This builder expects:
 
 ```
-Some text @@IMG:blink_kiss@@ more text
+css/lore.css
+css/terms.css
+```
+
+If missing, it will create **empty stub files** once.
+
+It will **never overwrite existing CSS**.
+
+You are expected to `@import base.css` yourself.
+
+---
+
+## Manifest entries
+
+Standard lore pages:
+
+```json
+{
+  "type": "L",
+  "arc": "lore",
+  "kind": "page",
+  "category": "wasteland",
+  "title": "Aberration",
+  "output": "content/lore/wasteland/aberration.html"
+}
+```
+
+Terms page:
+
+```json
+{
+  "type": "L",
+  "arc": "lore",
+  "kind": "terms",
+  "category": "terms",
+  "title": "Terms & Labels",
+  "output": "content/lore/terms.html"
+}
+```
+
+Only `manifest.arcs.lore` is replaced.
+
+---
+
+## Running the builder
+
+```bash
+python build_lore.py
+```
+
+Requirements:
+
+* Python 3.10+
+* Pandoc installed and on PATH
+
+The script logs to:
+
+```
+lore_build_log.txt
 ```
 
 ---
 
-### 4.3 Missing images (HARD-CODED BEHAVIOR)
+## Design philosophy (so you don’t “optimize” it to death)
 
-If an image is not found:
-
-* A visible placeholder is inserted into the chapter
-* Missing image is listed in:
-
-  * the chapter gallery
-  * `log.txt`
-
-Build **does not fail**.
-
----
-
-## 5. COVER IMAGE RULES (HARD-CODED)
-
-### 5.1 Flame cover
-
-```
-media/hellfirefiends.webp
-```
-
-### 5.2 Order cover
-
-```
-media/ark.webp
-```
-
-If missing:
-
-* Placeholder block is rendered instead
-* Logged as missing
-
----
-
-## 6. GALLERY RULES (HARD-CODED)
-
-* Gallery is generated **only** from images referenced by hooks
-* No unused images are shown
-* Gallery is:
-
-  * collapsed by default
-  * revealed via “Show Gallery” button
-* Missing images appear in gallery as warnings
-
-No manual gallery editing allowed.
-
----
-
-## 7. CSS & NAVIGATION RULES
-
-### 7.1 CSS loading (HARD-CODED)
-
-All chapters load:
-
-```
-css/base.css
-```
-
-Additionally:
-
-* Flame → `css/flame.css`
-* Order → `css/order.css`
-
----
-
-### 7.2 Back-to-list button (HARD-CODED)
-
-Every chapter includes:
-
-```
-← Back to chapter list
-```
-
-Targets:
-
-* Flame → `flame.html`
-* Order → `order.html`
-
-Button text is identical everywhere.
-
----
-
-## 8. WHAT IS ALLOWED TO CHANGE (SAFE)
-
-* Chapter text content
-* Chapter order
-* Adding/removing hooks
-* Replacing images without changing filenames
-* CSS styling
-* JS behavior (navigation, gallery visuals)
-* Adding new DOCX files that follow naming rules
-
----
-
-## 9. WHAT MUST NEVER BE DONE
-
-* Editing generated chapter HTML manually
-* Renaming images without updating hooks
-* Changing filename case inconsistently
-* Adding spaces or formatting to hook lines
-* Mixing generated and handwritten HTML
-* Moving files out of defined folders
-
----
-
-## 10. CORE PRINCIPLE (DO NOT VIOLATE)
-
-**All change happens at build time.**
-Generated HTML is immutable output.
-
-If you feel tempted to “just tweak the HTML once,”
-the system is working and your impulse is the bug.
-
-
+* Lore is infrastructure, not narrative
+* Folder structure > filenames
+* Builders should be dumb and deterministic
+* Sorting happens at build time, not runtime
+* Search is client-side and disposable

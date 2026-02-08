@@ -1,0 +1,556 @@
+/* ═══════════════════════════════════════════════════════════════════
+   LORE NAVIGATOR
+   Index / archive view
+   ═══════════════════════════════════════════════════════════════════ */
+
+body.lore {
+  background: #0a0a0a;
+  color: #ffffff;
+  font-family: system-ui, -apple-system, sans-serif;
+  min-height: 100svh;
+  position: relative;
+}
+
+/* Subtle grain texture overlay */
+body.lore::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(255, 61, 0, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 61, 0, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.lore > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   NAV
+────────────────────────────────────────────────────────────── */
+
+.nav {
+  padding: 20px 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  backdrop-filter: blur(8px);
+  background: rgba(10,10,10,0.8);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav a {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(255,255,255,0.5);
+  transition: color 0.2s ease;
+  position: relative;
+}
+
+.nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #ff3d00;
+  transition: width 0.3s ease;
+}
+
+.nav a:hover {
+  color: #ffffff;
+}
+
+.nav a:hover::after {
+  width: 100%;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   HEADER
+────────────────────────────────────────────────────────────── */
+
+.topbar {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 80px 32px 56px;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.topbar h1 {
+  font-size: clamp(40px, 7vw, 64px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+}
+
+.topbar .sub {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.5);
+  max-width: 480px;
+  font-weight: 400;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   LIST
+────────────────────────────────────────────────────────────── */
+
+.list {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 32px 120px;
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#loreList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-radius: 2px;
+}
+
+/* Each lore entry */
+#loreList a {
+  display: block;
+  padding: 20px 24px;
+  text-decoration: none;
+  color: rgba(255,255,255,0.85);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  position: relative;
+  overflow: hidden;
+  transition:
+    padding-left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+/* Subtle hover background gradient */
+#loreList a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 61, 0, 0.03) 50%, 
+    transparent 100%);
+  transition: left 0.4s ease;
+  pointer-events: none;
+}
+
+#loreList a:hover::before {
+  left: 100%;
+}
+
+/* Accent line on left */
+#loreList a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: linear-gradient(180deg, #ff3d00 0%, rgba(255, 61, 0, 0.3) 100%);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#loreList a:hover::after {
+  width: 3px;
+}
+
+/* Title styling */
+#loreList a strong,
+#loreList a b {
+  display: block;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  margin-bottom: 2px;
+  transition: transform 0.2s ease;
+}
+
+/* Optional description */
+#loreList a span,
+#loreList a em {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.45);
+  font-style: normal;
+  transition: color 0.2s ease;
+}
+
+/* Hover state */
+#loreList a:hover {
+  padding-left: 32px;
+  color: #ffffff;
+  background: rgba(255,255,255,0.02);
+}
+
+#loreList a:hover strong,
+#loreList a:hover b {
+  transform: translateX(2px);
+}
+
+#loreList a:hover span,
+#loreList a:hover em {
+  color: rgba(255,255,255,0.6);
+}
+
+/* Empty state */
+#loreList:empty::before {
+  content: "No lore entries yet.";
+  display: block;
+  padding: 48px 24px;
+  color: rgba(255,255,255,0.3);
+  text-align: center;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   TREE NAVIGATION (details/summary based)
+────────────────────────────────────────────────────────────── */
+
+.nav-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Folder groups */
+.nav-group {
+  margin: 4px 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Clickable folder header */
+.nav-group > summary {
+  list-style: none; /* Hide default triangle */
+  padding: 14px 18px 14px 48px;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  font-size: 14px;
+  color: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 8px;
+  position: relative;
+  transition: 
+    background 0.2s ease, 
+    border-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Remove default disclosure triangle in all browsers */
+.nav-group > summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav-group > summary::marker {
+  display: none;
+}
+
+/* Custom triangle indicator */
+.nav-group > summary::before {
+  content: '▸';
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  transition: 
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+    color 0.2s ease;
+}
+
+/* Open state - rotate triangle */
+.nav-group[open] > summary::before {
+  content: '▾';
+  transform: translateY(-50%);
+}
+
+/* Hover state for the entire summary */
+.nav-group > summary:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.12);
+  transform: translateX(2px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.nav-group > summary:hover::before {
+  color: rgba(255,255,255,1);
+}
+
+/* Active/click state */
+.nav-group > summary:active {
+  transform: translateX(2px) scale(0.98);
+  background: rgba(255,255,255,0.1);
+}
+
+/* Folder body (contents) */
+.nav-group-body {
+  padding: 8px 0 8px 24px;
+}
+
+/* Nested groups get subtle indentation */
+.nav-group .nav-group {
+  margin-left: 12px;
+}
+
+.nav-group .nav-group > summary {
+  font-size: 13px;
+  padding: 11px 16px 11px 42px;
+  background: rgba(255,255,255,0.01);
+}
+
+.nav-group .nav-group > summary::before {
+  left: 16px;
+  font-size: 11px;
+}
+
+/* Chapter rows inside nav-tree */
+.nav-tree .chapter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 4px 0;
+}
+
+.nav-tree .chapter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px 10px 48px;
+  text-decoration: none;
+  color: rgba(255,255,255,0.8);
+  border-radius: 6px;
+  position: relative;
+  transition: 
+    background 0.2s ease, 
+    color 0.2s ease,
+    padding-left 0.2s ease;
+}
+
+/* Bullet point indicator for leaves */
+.nav-tree .chapter-row::before {
+  content: '•';
+  position: absolute;
+  left: 28px;
+  color: rgba(255,61,0,0.4);
+  font-size: 12px;
+  transition: color 0.2s ease;
+}
+
+.nav-tree .chapter-row:hover {
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  padding-left: 52px;
+}
+
+.nav-tree .chapter-row:hover::before {
+  color: rgba(255,61,0,0.8);
+}
+
+.nav-tree .chapter-row.active {
+  background: rgba(255,61,0,0.08);
+  color: #ffffff;
+  border-left: 3px solid #ff3d00;
+  padding-left: 45px;
+}
+
+.nav-tree .chapter-row.active::before {
+  color: #ff3d00;
+}
+
+/* Chapter title and meta inside tree */
+.nav-tree .chapter-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.nav-tree .chapter-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.nav-tree .chapter-meta {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 2px;
+}
+
+.nav-tree .chapter-right {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.nav-tree .badge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.6);
+}
+
+.nav-tree .badge-missing {
+  background: rgba(255,61,0,0.15);
+  color: rgba(255,100,80,0.9);
+}
+
+
+/* ──────────────────────────────────────────────────────────────
+   FOOTER
+────────────────────────────────────────────────────────────── */
+
+.footer {
+  border-top: 1px solid rgba(255,255,255,0.04);
+  padding: 32px 24px;
+  text-align: center;
+  background: rgba(10,10,10,0.8);
+  backdrop-filter: blur(8px);
+}
+
+.footer a {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(255,255,255,0.4);
+  transition: color 0.2s ease;
+  position: relative;
+  display: inline-block;
+}
+
+.footer a::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 1px;
+  background: #ff3d00;
+  transition: width 0.3s ease;
+}
+
+.footer a:hover {
+  color: #ffffff;
+}
+
+.footer a:hover::after {
+  width: 100%;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   RESPONSIVE
+────────────────────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .nav {
+    padding: 16px 20px;
+  }
+
+  .topbar {
+    padding: 56px 20px 40px;
+  }
+
+  .list {
+    padding: 0 20px 80px;
+  }
+
+  #loreList a {
+    padding: 18px 16px;
+  }
+
+  #loreList a:hover {
+    padding-left: 24px;
+  }
+
+  .lore-tree a.lore-leaf {
+    padding-left: 44px;
+  }
+
+  .lore-tree a.lore-leaf::before {
+    left: 26px;
+  }
+
+  .lore-tree a.lore-leaf:hover {
+    padding-left: 48px;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   ACCESSIBILITY
+────────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus states for keyboard navigation */
+.nav a:focus-visible,
+#loreList a:focus-visible,
+.lore-tree a.lore-leaf:focus-visible,
+.footer a:focus-visible {
+  outline: 2px solid #ff3d00;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.lore-tree .folder:focus-visible {
+  outline: 2px solid #ff3d00;
+  outline-offset: 2px;
+}
