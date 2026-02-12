@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generated_at": "2026-02-08T23:06:31",
+  "generated_at": "2026-02-12T01:49:35",
   "root": "storyhub",
   "arcs": {
     "flame": [
@@ -33,6 +33,23 @@
         "slug": "droughtbreak",
         "source": "source-docx/F_02_DROUGHTBREAK.docx",
         "output": "content/flame/02_DROUGHTBREAK.html",
+        "images": [],
+        "missing_images": [],
+        "counts": {
+          "images_used": 0,
+          "images_missing": 0
+        }
+      },
+      {
+        "id": "F_03",
+        "type": "F",
+        "arc": "flame",
+        "index": 3,
+        "title": "03 MUZZLELOCK",
+        "title_text": "MUZZLELOCK",
+        "slug": "muzzlelock",
+        "source": "source-docx/F_03_MUZZLELOCK.docx",
+        "output": "content/flame/03_MUZZLELOCK.html",
         "images": [],
         "missing_images": [],
         "counts": {
